@@ -36,8 +36,8 @@
   top: calc(0px - var(--tw-lbl-big-size) - var(--tw-lbl-small-size) - var(--tw-lbl-gap) - 10px);
   width: calc(100% - var(--tw-ibx-size));
 }
-.twae-vertical.twae-wrapper .twae-compact .twae-label-content-inside .twae-labels,
-.twae-vertical.twae-wrapper .twae-compact .twae-label-content-top .twae-labels{
+.twae-vertical.twae-wrapper.twae-label-content-inside .twae-compact .twae-labels,
+.twae-vertical.twae-wrapper.twae-label-content-top .twae-compact .twae-labels{
   width: 100%;
 }
 .twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-labels {
@@ -179,7 +179,7 @@
   .twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-icon .twae-arrow-line,
   .twae-vertical.twae-wrapper .twae-compact .twae-story-left.twae-story-no-icon .twae-arrow-line {
     width: calc(var(--tw-ibx-size) - var(--tw-ibx-size) / 4);
-    left: calc(var(--tw-ibx-size) / 2 + var(--tw-ibx-size) / 4);
+    left: calc(0px - var(--tw-ibx-size)/ 4 - var(--tw-ibx-size) / 2);
     right: auto;
   }
   .twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-dot .twae-arrow-line,

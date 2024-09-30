@@ -4,48 +4,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $html                   = '';
 $widget_id              = $this->get_id();
-$autoplay               = $settings['twae_autoplay'];
-$sides_height           = $settings['twae_slides_height'];
+$autoplay               = isset( $settings['twae_autoplay'] ) ? sanitize_text_field( $settings['twae_autoplay'] ) : '';
+$sides_height           = isset( $settings['twae_slides_height'] ) ? sanitize_text_field( $settings['twae_slides_height'] ) : '';
 $multicolor             = 1; // set multicolor position.
-$navigation_hr_position = isset( $settings['twae_hr_navigation_position'] ) ? $settings['twae_hr_navigation_position'] : 'right';
+$navigation_hr_position = isset( $settings['twae_hr_navigation_position'] ) ? sanitize_text_field( $settings['twae_hr_navigation_position'] ) : 'right';
+$thumb_content          = isset( $settings['twae_content_side_by_side'] ) ? sanitize_text_field( $settings['twae_content_side_by_side'] ) : '';
+$label_content_inside   = isset( $settings['twae_label_inside'] ) && 'no' !== $settings['twae_label_inside'] && 'horizontal-highlighted' !== $layout ? sanitize_text_field( $settings['twae_label_inside'] ) : '';
+$label_content_main_cls = ! empty( $label_content_inside ) ? 'label_content_top' : '';
+$auto_height            = isset( $settings['twae_slides_height'] ) && 'default-height' === $settings['twae_slides_height'] ? 'true' : '';
+$image_lightbox         = isset( $settings['twae_lightbox_settings'] ) && 'yes' !== ( isset( $settings['twae_content_in_popup'] ) ? $settings['twae_content_in_popup'] : 'no' ) ? sanitize_text_field( $settings['twae_lightbox_settings'] ) : '';
+$image_hover_effect     = isset( $settings['twae_image_hover_effect'] ) && 'yes' !== ( isset( $settings['twae_content_in_popup'] ) ? $settings['twae_content_in_popup'] : 'no' ) ? sanitize_text_field( $settings['twae_image_hover_effect'] ) : '';
+$line_filling           = isset( $settings['center_line_filling'] ) && 'yes' === ( isset( $settings['center_line_filling'] ) ? $settings['center_line_filling'] : 'no' ) ? 'true' : '';
 $label_ht_show          = '';
+$sides_to_show          = '';
+$thumb                  = '';
+
 if ( 'horizontal-highlighted' === $layout ) {
 	$label_ht_show = 'yes';
 }
-$thumb_content          = isset( $settings['twae_content_side_by_side'] ) ? $settings['twae_content_side_by_side'] : '';
-$label_content_inside   = 'no' !== $settings['twae_label_inside'] && 'horizontal-highlighted' !== $layout ? $settings['twae_label_inside'] : '';
-$label_content_main_cls = ! empty( $label_content_inside ) ? 'label_content_top' : '';
-$thumb                  = '';
+
 if ( 'yes' === $thumb_content ) {
 	$thumb = 'thumb';
 };
-$image_lightbox     = isset( $settings['twae_lightbox_settings'] ) && 'yes' !== $settings['twae_content_in_popup'] ? $settings['twae_lightbox_settings'] : '';
-$image_hover_effect = isset( $settings['twae_image_hover_effect'] ) && 'yes' !== $settings['twae_content_in_popup'] ? $settings['twae_image_hover_effect'] : '';
-$sides_to_show      = '';
+
 if ( isset( $settings['twae_slides_to_show']['size'] ) && ! empty( $settings['twae_slides_to_show']['size'] ) ) {
-	$sides_to_show = $settings['twae_slides_to_show']['size'];
+	$sides_to_show = sanitize_text_field( $settings['twae_slides_to_show']['size'] );
 } else {
-	$sides_to_show = isset( $settings['twae_slides_to_show'] ) ? $settings['twae_slides_to_show'] : 2;
+	$sides_to_show = isset( $settings['twae_slides_to_show'] ) ? sanitize_text_field( $settings['twae_slides_to_show'] ) : 2;
 }
 
-$hightlighted_showslides = isset( $settings['twae_highlighted_to_show'] ) ? $settings['twae_highlighted_to_show'] : 3;
-$autoplay_stop_hover     = isset( $settings['twae_autoplaystop_mousehover'] ) ? $settings['twae_autoplaystop_mousehover'] : '';
+$hightlighted_showslides = isset( $settings['twae_highlighted_to_show'] ) ? sanitize_text_field( $settings['twae_highlighted_to_show'] ) : 3;
+$autoplay_stop_hover     = isset( $settings['twae_autoplaystop_mousehover'] ) ? sanitize_text_field( $settings['twae_autoplaystop_mousehover'] ) : '';
 $sides_to_show           = 'horizontal-highlighted' !== $layout ? $sides_to_show : $hightlighted_showslides;
 
-$space_bw = isset( $settings['twae_h_space_bw']['size'] ) && ! empty( $settings['twae_h_space_bw']['size'] ) ? $settings['twae_h_space_bw']['size'] : 60;
+$space_bw = isset( $settings['twae_h_space_bw']['size'] ) && ! empty( $settings['twae_h_space_bw']['size'] ) ? sanitize_text_field( $settings['twae_h_space_bw']['size'] ) : 60;
 
-
-$infinite_loop = isset( $settings['twae_infinite_loop'] ) ? $settings['twae_infinite_loop'] : 'false';
-$twae_speed    = isset( $settings['twae_speed'] ) ? $settings['twae_speed'] : 1000;
+$infinite_loop = isset( $settings['twae_infinite_loop'] ) ? sanitize_text_field( $settings['twae_infinite_loop'] ) : 'false';
+$twae_speed    = isset( $settings['twae_speed'] ) ? sanitize_text_field( $settings['twae_speed'] ) : 1000;
 
 if ( isset( $settings['navigation_control_icon'] ) ) {
-	$control_icon    = $settings['navigation_control_icon'];
+	$control_icon    = sanitize_text_field( $settings['navigation_control_icon'] );
 	$navi_left_icon  = Twae_Functions::get_navi_control_icon( $control_icon );
-	$right_index     = str_replace( 'left', 'right', $control_icon );
-	$navi_right_icon = Twae_Functions::get_navi_control_icon( $right_index );
+	$navi_right_icon = Twae_Functions::get_navi_control_icon( $control_icon, 'right' );
 } else {
-	$navi_left_icon  = '<i class="fas fa-chevron-left"></i>';
-	$navi_right_icon = '<i class="fas fa-chevron-right"></i>';
+	$navi_left_icon  = Twae_Functions::get_navi_control_icon( 'fas fa-chevron-left' );
+	$navi_right_icon = Twae_Functions::get_navi_control_icon( 'fas fa-chevron-right' );
 }
 
 // Connector Type
@@ -56,22 +59,8 @@ if ( isset( $settings['twae_cbox_connector_style'] ) && ( 'default' === $setting
 		$twae_cbox_connector_style = 'twae-arrow';
 	}
 } else {
-	$twae_cbox_connector_style = isset( $settings['twae_cbox_connector_style'] ) ? $settings['twae_cbox_connector_style'] : 'twae-arrow';
+	$twae_cbox_connector_style = isset( $settings['twae_cbox_connector_style'] ) ? sanitize_text_field( $settings['twae_cbox_connector_style'] ) : 'twae-arrow';
 }
-
-// Horizontal Icon Position.
-$twae_icon_position = '';
-if ( 'horizontal-highlighted' !== $layout ) {
-	if ( $settings['twae_icon_position']['size'] < 40 && $settings['twae_icon_position']['size'] >= 1 ) {
-		$twae_icon_position = 'twae-position-40-minus';
-	} elseif ( $settings['twae_icon_position']['size'] > 50 && $settings['twae_icon_position']['size'] <= 60 ) {
-		$twae_icon_position = 'twae-position-50-60';
-	} elseif ( $settings['twae_icon_position']['size'] > 60 && $settings['twae_icon_position']['size'] <= 100 ) {
-		$twae_icon_position = 'twae-position-60-plus';
-	} else {
-		$twae_icon_position = 'twae-position-40-50';
-	}
-};
 
 // Horizontal Center Line Filler.
 if ( isset( $settings['center_line_filling'] ) && $settings['center_line_filling'] == 'yes' ) {
@@ -118,6 +107,8 @@ $twae_wrapper_attr = array(
 ! empty( $timeline_style ) && array_push( $twae_wrapper_attr['class'], esc_attr( $timeline_style ) );
 ! empty( $twae_bg_type ) && array_push( $twae_wrapper_attr['class'], esc_attr( $twae_bg_type ) );
 ! empty( $label_content_main_cls ) && array_push( $twae_wrapper_attr['class'], esc_attr( $label_content_main_cls ) );
+! empty( $twae_bg_hover ) && array_push( $twae_wrapper_attr['class'], esc_attr( $twae_bg_hover ) );
+! empty( $label_content_inside ) && array_push( $twae_wrapper_attr['class'], esc_attr( $label_content_inside ) );
 
 $twae_container_attr = array(
 	'id'    => 'twae-slider-container',
@@ -131,7 +122,9 @@ $twae_container_attr = array(
 ! empty( $timeline_style ) && $twae_container_attr['data-style']                      = esc_attr( $timeline_style );
 ! empty( $infinite_loop ) && $twae_container_attr['data-infinite-loop']               = esc_attr( $infinite_loop );
 ! empty( $twae_speed ) && $twae_container_attr['data-speed']                          = esc_attr( $twae_speed );
+! empty( $auto_height ) && $twae_container_attr['data-auto-height']                   = esc_attr( $auto_height );
 ! empty( $autoplay_stop_hover ) && $twae_container_attr['data-stop-autoplay-onhover'] = esc_attr( $autoplay_stop_hover );
+! empty( $line_filling ) && $twae_container_attr['data-line-filling']                 = esc_attr( $line_filling );
 ! empty( $twae_line_filler ) && array_push( $twae_container_attr['class'], esc_attr( $twae_line_filler ) );
 ! empty( $thumb ) && array_push( $twae_container_attr['class'], esc_attr( $thumb ) );
 
@@ -160,10 +153,11 @@ $this->add_render_attribute(
 if ( 'yes' === $enable_navigation ) {
 	$navbar_html  = '';
 	$navbar_html .= '<div class="twae-hor-nav-wrapper"><div ' . $this->get_render_attribute_string( 'navigation-horizontal-bar' ) . '>';
-	$navbar_html .= '  </div><div class="swiper-button-next twae-nav-next">
-                            <i class="fas fa-chevron-right"></i></div>
-                            <div class="swiper-button-prev twae-nav-prev">
-                            <i class="fas fa-chevron-left"></i></div>';
+	$navbar_html .= '  </div><div class="swiper-button-next twae-nav-next">';
+	$navbar_html .= Twae_Functions::get_navi_control_icon( 'fas fa-chevron-right' );
+	$navbar_html .= '</div><div class="swiper-button-prev twae-nav-prev">';
+	$navbar_html .= Twae_Functions::get_navi_control_icon( 'fas fa-chevron-left' );
+	$navbar_html .= '</div>';
 	$navbar_html .= '</div>';
 	$html        .= $navbar_html;
 }
@@ -189,8 +183,8 @@ if ( is_array( $data ) ) {
 		$sub_label_key   = $this->get_repeater_setting_key( 'twae_extra_label', 'twae_list', $index );
 		$description_key = $this->get_repeater_setting_key( 'twae_description', 'twae_list', $index );
 
-		$article_key       = 'twae-article-' . $content['_id'];
-		$repeator_item_key = 'elementor-repeater-item-' . $content['_id'];
+		$article_key       = 'twae-article-' . sanitize_text_field( $content['_id'] );
+		$repeator_item_key = 'elementor-repeater-item-' . sanitize_text_field( $content['_id'] );
 
 		$this->add_render_attribute( $title_key, array( 'class' => 'twae-title' ) );
 		$this->add_render_attribute( $year_key, array( 'class' => 'twae-year-text' ) );
@@ -230,9 +224,6 @@ if ( is_array( $data ) ) {
 		);
 
 		! empty( $icon_cls ) && array_push( $article_key_attr['class'], esc_attr( $icon_cls ) );
-		! empty( $twae_icon_position ) && array_push( $article_key_attr['class'], esc_attr( $twae_icon_position ) );
-		! empty( $twae_bg_hover ) && array_push( $article_key_attr['class'], esc_attr( $twae_bg_hover ) );
-		! empty( $label_content_inside ) && array_push( $article_key_attr['class'], esc_attr( $label_content_inside ) );
 		'twae-bg-multicolor' === $twae_bg_type && $article_key_attr['data-multicolor'] = esc_attr( $multicolor );
 		$this->add_render_attribute(
 			$article_key,
@@ -253,12 +244,12 @@ if ( is_array( $data ) ) {
 
 		// Horizontal highlighted content start.
 		if ( 'horizontal-highlighted' === $layout ) {
-			$ht_label_key = 'twae-year-main-div-' . $content['_id'];
+			$ht_label_key = 'twae-year-main-div-' . sanitize_text_field( $content['_id'] );
 			$this->add_render_attribute(
 				$ht_label_key,
 				array(
 					'id'    => esc_attr( $ht_label_key ),
-					'class' => array( 'twae-highlighted-hr', 'swiper-slide' ),
+					'class' => array( 'swiper-slide' ),
 				)
 			);
 
@@ -336,8 +327,12 @@ $html       .= '</div>';
 $html       .= ' <!-- Add Arrows -->
 <div class="twae-button-prev">' . $navi_left_icon . '</div>
 <div class="twae-button-next">' . $navi_right_icon . '</div>
-<div class="twae-h-line"></div>
-<div class="twae-line-fill"></div>
-</div>';
+<div class="twae-h-line"></div>';
+
+if ( ! empty( $line_filling ) && 'true' === $line_filling ) {
+	$html .= '<div class="twae-line-fill"></div>';
+}
+
+$html .= '</div>';
 
 echo $html;

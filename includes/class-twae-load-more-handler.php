@@ -4,32 +4,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 use Elementor\Utils;
 use Elementor\Controls_Stack;
+
 /**
  *
- * This file is responsible for handeling all AJAX requests
+ * This file is responsible for handling all AJAX requests
  */
 class twae_loadmore_handler {
 
 	public $settings;
+
 	public function __construct() {
-		 add_action( 'wp_ajax_twae_post_load_more', array( $this, 'twae_post_load_more' ) );
+		add_action( 'wp_ajax_twae_post_load_more', array( $this, 'twae_post_load_more' ) );
 		add_action( 'wp_ajax_nopriv_twae_post_load_more', array( $this, 'twae_post_load_more' ) );
 		add_action( 'wp_ajax_twae_preset_feat', array( $this, 'twae_preset_feat' ) );
 		add_action( 'wp_ajax_twae_process_ixport', array( $this, 'twae_process_media_import' ) );
-
 	}
+
 	/**
 	 * This function is used to import media
 	 */
 	public function twae_process_media_import() {
-
 		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
 
-		$type = isset( $_POST['type'] ) ? $_POST['type'] : 'import';
-
-		$content = isset( $_POST['content'] ) ? wp_unslash( $_POST['content'] ) : '';
-		if ( ! wp_verify_nonce( $nonce, 'twae_process_ixport' )
-		) {
+		if ( ! wp_verify_nonce( $nonce, 'twae_process_ixport' ) ) {
 			wp_send_json_error(
 				__( 'You are not allowed to complete this task, thank you.', 'twae' ),
 				403
@@ -43,13 +40,12 @@ class twae_loadmore_handler {
 			);
 		}
 
-		$media = isset( $_POST['content'] ) ? wp_unslash( $_POST['content'] ) : '';
-
-		if ( empty( $media ) ) {
+		$content = isset( $_POST['content'] ) ? wp_unslash( $_POST['content'] ) : '';
+		if ( empty( $content ) ) {
 			wp_send_json_error( __( 'Looks like content is empty. Cannot be processed.', 'twae' ) );
 		}
 
-		$media = array( json_decode( $media, true ) );
+		$media = array( json_decode( $content, true ) );
 		$media = $this->twae_replace_elements_ids( $media );
 		$media = $this->twae_import_media_content( $media );
 
@@ -58,7 +54,7 @@ class twae_loadmore_handler {
 
 	/**
 	 * This function is used to Replace media items IDs.
-	 * */
+	 */
 	public function twae_replace_elements_ids( $media ) {
 		return Elementor\Plugin::instance()->db->iterate_data(
 			$media,
@@ -113,16 +109,16 @@ class twae_loadmore_handler {
 
 		return $element_instance;
 	}
+
 	public function twae_preset_feat() {
 		if ( ! check_ajax_referer( 'twae_prset_nonce', 'nonce' ) ) {
 			wp_send_json_error( __( 'Invalid surprise request', 'twae' ), 403 );
 		}
-		$design_name = isset( $_POST['widget'] ) ? $_POST['widget'] : '';
-		// var_dump($design_name);
-		// die();
-		$design = $this->twae_get_designs( $design_name );
+		$design_name = isset( $_POST['widget'] ) ? sanitize_text_field( $_POST['widget'] ) : '';
+		$design      = $this->twae_get_designs( $design_name );
 		wp_send_json_success( $design, 200 );
 	}
+
 	public function twae_get_designs( $design_name ) {
 		$design = TWAE_PRO_PATH . 'admin/preset/designs/' . $design_name . '.json';
 		if ( ! is_readable( $design ) ) {
@@ -131,27 +127,25 @@ class twae_loadmore_handler {
 		return file_get_contents( $design );
 	}
 
-
 	/**
 	 *
 	 * This is a callback function response back with HTML for post timeline infinite scrolling load more
 	 */
 	public function twae_post_load_more() {
 		if ( check_ajax_referer( 'twae_ajax_pagination', 'private_key' ) ) {
-
 			$page_no = ! isset( $_POST['page_no'] ) ? 1 : filter_var( $_POST['page_no'], FILTER_SANITIZE_NUMBER_INT );
 
-			$settings                         = $_POST['settings'];
-			$post_settings                    = $settings;
-			$query_args                       = array();
-			$post_per_page                    = $settings['show_posts'];
-			$query_args['post_type']          = $settings['post_type'];
-			$query_args['order']              = $settings['order'];
-			$query_args['show_posts']         = $post_per_page;
-			$query_args['twae_post_category'] = isset( $settings['twae_post_category'] ) ? $settings['twae_post_category'] : '';
-			$query_args['twae_post_post_tag'] = isset( $settings['twae_post_post_tag'] ) ? $settings['twae_post_post_tag'] : '';
-			$post_types                       = isset( $settings['twae_post_post_type'] ) ? $settings['twae_post_post_type'] : 'post';
-			$taxonomies                       = get_object_taxonomies( $post_types );
+			$settings                 = isset( $_POST['settings'] ) ? $_POST['settings'] : array();
+			$settings                 = $this->twae_attr_filter( $settings );
+			$post_settings            = $settings;
+			$query_args               = array();
+			$post_per_page            = $settings['show_posts'];
+			$query_args['post_type']  = $settings['post_type'];
+			$query_args['order']      = $settings['order'];
+			$query_args['show_posts'] = $post_per_page;
+			$post_types               = isset( $settings['post_type'] ) ? $settings['post_type'] : 'post';
+			$taxonomies               = get_object_taxonomies( $post_types );
+
 			foreach ( $taxonomies as $taxonomy => $object ) {
 				if ( 'post_format' === $object ) {
 					continue;
@@ -185,6 +179,45 @@ class twae_loadmore_handler {
 				)
 			);
 		}
+	}
+
+	public function twae_attr_filter( $attr ) {
+		$symbols = array( '*', '(', ')', '[', ']', '{', '}', '"', "'", '\\', '/', ';', '$', '<', '>', '.', '”' );
+		if ( is_array( $attr ) ) {
+			$attributes = array();
+			foreach ( $attr as $key => $values ) {
+				if ( is_array( $values ) ) {
+					$attributes[ $key ] = $this->nested_attr_filter( $values );
+				} elseif ( 'date_format' === $key ) {
+					$attributes[ $key ] = wp_kses_post( $values );
+				} else {
+					$value              = str_replace( $symbols, '', $values );
+					$value              = esc_html( $value );
+					$value              = preg_replace( ' / \s + / ', '', $value );
+					$attributes[ $key ] = $value;
+				}
+			}
+			return $attributes;
+		} else {
+			$attr = str_replace( $symbols, '', $attr );
+			$attr = esc_html( $attr );
+			$attr = preg_replace( ' / \s + / ', '', $attr );
+			return esc_html( $attr );
+		}
+	}
+
+	public function nested_attr_filter( $attr ) {
+		$attribute = array();
+
+		foreach ( $attr as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$attribute[ $key ] = $this->nested_attr_filter( $value );
+			} else {
+				$attribute[ $key ] = $this->twae_attr_filter( $value );
+			}
+		}
+
+		return $attribute;
 	}
 }
 new twae_loadmore_handler();

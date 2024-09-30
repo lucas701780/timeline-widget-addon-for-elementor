@@ -32,16 +32,18 @@ if(thumb_content == 'yes'){
 }		
 
 var label_content_top = '';
-var label_content_inside = settings.twae_label_inside != 'no' ? settings.twae_label_inside : '';
-var label_content_main_cls = label_content_inside != '' && settings.twae_layout != "horizontal-highlighted" ? 'label_content_top' : '';
+var label_content_inside = settings.twae_label_inside != 'no' && settings.twae_layout != "horizontal-highlighted" ? settings.twae_label_inside : '';
+var label_content_main_cls = label_content_inside != '' ? 'label_content_top' : '';
 var image_lightbox = settings.twae_lightbox_settings !== undefined && settings.twae_content_in_popup != 'yes' ? settings.twae_lightbox_settings : ''; 
 var autoplay_stop_hover = settings.twae_autoplaystop_mousehover !== undefined ? settings.twae_autoplaystop_mousehover : ''; 
 var image_hover_effect = settings.twae_image_hover_effect == 'yes' && settings.twae_content_in_popup != 'yes' ? ' twae-img-effect' : '';
+var auto_height          = settings.twae_slides_height === 'default-height' ? 'true' : '';
 var spaceBW = settings.twae_h_space_bw.size;				
 var sidesHeight = settings.twae_slides_height;
 var autoplay = settings.twae_autoplay;
 var infiniteLoop=settings.twae_infinite_loop;
 var speed=settings.twae_speed;
+var line_filling=settings.center_line_filling!="undefined" && settings.center_line_filling=="yes" ? "true" : "";
 
 var twae_bg_type='';
 if(settings.twae_cbox_background_type!=='undefined' && settings.twae_cbox_background_type=='multicolor'){
@@ -112,7 +114,7 @@ if(enable_navigation == 'yes'){
 }
 #>
 
-<div  id="twae-wrapper-{{widgetId}}" data-style="{{timeline_style}}" data-enable-popup="{{enablePopup}}" class="twae-wrapper twae-horizontal-timeline {{timeline_layout_wrapper}} {{timeline_style}} {{twae_bg_type}} {{label_content_main_cls}}">
+<div  id="twae-wrapper-{{widgetId}}" data-style="{{timeline_style}}" data-enable-popup="{{enablePopup}}" class="twae-wrapper twae-horizontal-timeline {{timeline_layout_wrapper}} {{timeline_style}} {{twae_bg_type}} {{label_content_main_cls}} {{twae_line_filler}} {{twae_bg_hover}} {{label_content_inside}}">
 <div class="twae-wrapper-inside">
 	<#
 	var twae_bg_hover='';
@@ -245,7 +247,7 @@ if(enable_navigation == 'yes'){
 	#>
 				
 	<div class="twae-slider-container swiper-container {{thumb}}" 
-	dir="<?php echo esc_attr( $dir ); ?>" data-slidestoshow="{{sidesToShow}}" data-spacebw="{{spaceBW}}" data-autoplay="{{autoplay}}" data-speed="{{speed}}" data-infinite-loop="{{infiniteLoop}}" data-style="{{timeline_style}}" data-stop-autoplay-onhover="{{autoplay_stop_hover}}">
+	dir="<?php echo esc_attr( $dir ); ?>" data-slidestoshow="{{sidesToShow}}" data-spacebw="{{spaceBW}}" data-autoplay="{{autoplay}}" data-speed="{{speed}}" data-infinite-loop="{{infiniteLoop}}" data-style="{{timeline_style}}" data-stop-autoplay-onhover="{{autoplay_stop_hover}}" data-auto-height="{{auto_height}}" data-line-filling="{{line_filling}}">
 
 	<div class="twae-slider-wrapper swiper-wrapper {{sidesHeight}}">
 	<#
@@ -256,18 +258,6 @@ if(enable_navigation == 'yes'){
 	}else{
 		var navi_left_icon='fas fa-chevron-left';
 		var navi_right_icon='fas fa-chevron-right';
-	}
-	var twae_icon_position = '';
-	if(settings.twae_layout != 'horizontal-highlighted'){
-		if(settings.twae_icon_position.size >= 1 && settings.twae_icon_position.size < 40){
-			twae_icon_position='twae-position-40-minus';
-		}else if(settings.twae_icon_position.size > 50 && settings.twae_icon_position.size <= 60){
-			twae_icon_position='twae-position-50-60';
-		}else if(settings.twae_icon_position.size > 60){
-			twae_icon_position='twae-position-60-plus';
-		}else{
-			twae_icon_position='twae-position-40-50';
-		}
 	}
 
 var twae_line_filler='';
@@ -325,7 +315,7 @@ _.each( settings.twae_list, function( item, index ) {
 			var image_width = 'small'; 
 			}
 		  #>
-	<article id="twae-article-{{ item._id }}" class="twae-story swiper-slide elementor-repeater-item-{{ item._id }} {{twae_icon_position}} {{twae_line_filler}} {{twae_bg_hover}} {{icon_empty}} {{label_content_inside}}" data-index="{{index}}" data-multicolor="{{multiColor}}">	
+	<div id="twae-article-{{ item._id }}" class="twae-story swiper-slide elementor-repeater-item-{{ item._id }} {{icon_empty}}" data-index="{{index}}" data-multicolor="{{multiColor}}">	
 			<div class="twae-story-line"></div>
 				<#  
 				if(settings.twae_layout != 'horizontal-highlighted'){
@@ -455,12 +445,12 @@ _.each( settings.twae_list, function( item, index ) {
 							</div>
 							<div id="twae-popup-{{ item._id }}" class="twae-popup-content elementor-repeater-item-{{ item._id }}" style="display:none;"> 
 								 <?php require TWAE_PRO_PATH . 'widgets/story-timeline/editor-layouts/story-content-template.php'; ?>
-							<div>
+							</div>
 						 <# }else{ #>  
 							 <?php require TWAE_PRO_PATH . 'widgets/story-timeline/editor-layouts/story-content-template.php'; ?>
 							<# }   #>  
 							
-						 </article>
+						 </div>
 <# 
 
 if('twae-bg-multicolor' === twae_bg_type){
@@ -485,7 +475,12 @@ countItem = countItem+1;
 		<div class="twae-button-prev"><i class="{{navi_left_icon}}"></i></div>
 		<div class="twae-button-next "><i class="{{navi_right_icon}}"></i></div>
 		<div class="twae-h-line"></div>
-		<div class="twae-line-fill"></div>
+		
+
+		<# if ( 'true' === line_filling ) { #>
+			<div class="twae-line-fill"></div>
+		<# } #>
+
 	</div>
 	<# if('' !== cutomStyle){ #>
 		<{{styleTag}}>{{{cutomStyle}}}</{{styleTag}}>

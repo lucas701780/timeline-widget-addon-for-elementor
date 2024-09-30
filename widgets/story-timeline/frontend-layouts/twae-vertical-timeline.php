@@ -4,22 +4,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $widget_id           = $this->get_id();
-$navigation_style    = isset( $settings['twae_navigation_style'] ) ? $settings['twae_navigation_style'] : 'style-1';
-$navigation_position = isset( $settings['twae_navigation_position'] ) ? $settings['twae_navigation_position'] : 'right';
-$space               = isset( $settings['twae_space_between']['size'] ) ? $settings['twae_space_between']['size'] : '20';
+$navigation_style    = isset( $settings['twae_navigation_style'] ) ? sanitize_text_field( $settings['twae_navigation_style'] ) : 'style-1';
+$navigation_position = isset( $settings['twae_navigation_position'] ) ? sanitize_text_field( $settings['twae_navigation_position'] ) : 'right';
+$space               = isset( $settings['twae_space_between']['size'] ) ? intval( $settings['twae_space_between']['size'] ) : 20; // Ensure it's an integer
 $count_item          = 1;
 $multicolor          = 1; // set multicolor position.
-$line_filling        = '';
+$line_filling        = isset( $settings['center_line_filling'] ) && 'yes' === $settings['center_line_filling'] ? 'on' : '';
 $html                = '';
-if ( isset( $settings['center_line_filling'] ) && 'yes' === $settings['center_line_filling'] ) {
-	$line_filling = 'on';
-}
 
+$twae_cbox_connector_style = 'twae-arrow'; // Default value
 if ( isset( $settings['twae_cbox_connector_style'] ) && ( 'default' === $settings['twae_cbox_connector_style'] || empty( $settings['twae_cbox_connector_style'] ) ) ) {
 	if ( 'style-2' === $timeline_style ) {
 		$twae_cbox_connector_style = 'twae-arrow-line';
-	} else {
-		$twae_cbox_connector_style = 'twae-arrow';
 	}
 } else {
 	$twae_cbox_connector_style = isset( $settings['twae_cbox_connector_style'] ) ? $settings['twae_cbox_connector_style'] : 'twae-arrow';
@@ -28,38 +24,34 @@ if ( isset( $settings['twae_cbox_connector_style'] ) && ( 'default' === $setting
 $connector_html = '<div class="' . esc_attr( $twae_cbox_connector_style ) . '" ></div>';
 
 // Background Type
-if ( isset( $settings['twae_cbox_background_type'] ) && 'multicolor' === $settings['twae_cbox_background_type'] ) {
-	$twae_bg_type = 'twae-bg-multicolor';
-} elseif ( isset( $settings['twae_cbox_background_type'] ) && 'gradient' === $settings['twae_cbox_background_type'] ) {
-	$twae_bg_type = 'twae-bg-gradient';
-} else {
-	$twae_bg_type = 'twae-bg-simple';
+$twae_bg_type = 'twae-bg-simple'; // Default value
+if ( isset( $settings['twae_cbox_background_type'] ) ) {
+	switch ( $settings['twae_cbox_background_type'] ) {
+		case 'multicolor':
+			$twae_bg_type = 'twae-bg-multicolor';
+			break;
+		case 'gradient':
+			$twae_bg_type = 'twae-bg-gradient';
+			break;
+	}
 }
 
 // Background Hover Type
-if ( isset( $settings['twae_cbox_background_type_hover'] ) && 'simple' === $settings['twae_cbox_background_type_hover'] ) {
-	$twae_bg_hover = 'twae-bg-hover';
-} else {
-	$twae_bg_hover = '';
-}
-$label_content_top    = 'no' !== $settings['twae_label_content_top'] ? $settings['twae_label_content_top'] : '';
-$label_content_inside = 'no' !== $settings['twae_label_inside'] ? $settings['twae_label_inside'] : '';
-// image outside condition
-$image_outside = 'no' !== $settings['twae_image_outside_box'] && 'yes' !== $settings['twae_content_in_popup'] ? $settings['twae_image_outside_box'] : '';
+$twae_bg_hover = ( isset( $settings['twae_cbox_background_type_hover'] ) && 'simple' === $settings['twae_cbox_background_type_hover'] ) ? 'twae-bg-hover' : '';
+
+$label_content_top    = !empty( $settings['twae_label_content_top'] ) && 'no' !== $settings['twae_label_content_top'] ? sanitize_text_field( $settings['twae_label_content_top'] ) : '';
+$label_content_inside = !empty( $settings['twae_label_inside'] ) && 'no' !== $settings['twae_label_inside'] ? sanitize_text_field( $settings['twae_label_inside'] ) : '';
+$image_outside = ( 'no' !== $settings['twae_image_outside_box'] && 'yes' !== $settings['twae_content_in_popup'] ) ? sanitize_text_field( $settings['twae_image_outside_box'] ) : '';
 
 // label content inside if image outside on
 if ( 'twae-label-content-inside' !== $label_content_inside && 'twae-label-content-top' !== $label_content_top && 'twae_image_outside' === $image_outside ) {
 	$label_content_inside = 'twae-label-content-inside';
-};
-
-$image_lightbox     = isset( $settings['twae_lightbox_settings'] ) && 'yes' !== $settings['twae_content_in_popup'] ? $settings['twae_lightbox_settings'] : '';
-$image_hover_effect = isset( $settings['twae_image_hover_effect'] ) && 'yes' !== $settings['twae_content_in_popup'] ? $settings['twae_image_hover_effect'] : '';
-
-$container_cls = '';
-
-if ( 'compact' === $layout ) {
-	$container_cls = 'twae-compact';
 }
+
+$image_lightbox     = isset( $settings['twae_lightbox_settings'] ) && 'yes' !== $settings['twae_content_in_popup'] ? sanitize_text_field( $settings['twae_lightbox_settings'] ) : '';
+$image_hover_effect = isset( $settings['twae_image_hover_effect'] ) && 'yes' !== $settings['twae_content_in_popup'] ? sanitize_text_field( $settings['twae_image_hover_effect'] ) : '';
+
+$container_cls = ( 'compact' === $layout ) ? 'twae-compact' : '';
 
 // added render attributes start.
 $this->add_render_attribute(
@@ -81,6 +73,10 @@ $twae_wrapper_attr = array(
 ! empty( $timeline_layout_wrapper ) && array_push( $twae_wrapper_attr['class'], esc_attr( $timeline_layout_wrapper ) );
 ! empty( $timeline_style ) && array_push( $twae_wrapper_attr['class'], esc_attr( $timeline_style ) );
 ! empty( $twae_bg_type ) && array_push( $twae_wrapper_attr['class'], esc_attr( $twae_bg_type ) );
+! empty( $twae_bg_hover ) && array_push( $twae_wrapper_attr['class'], esc_attr( $twae_bg_hover ) );
+! empty( $label_content_top ) && array_push( $twae_wrapper_attr['class'], esc_attr( $label_content_top ) );
+! empty( $label_content_inside ) && array_push( $twae_wrapper_attr['class'], esc_attr( $label_content_inside ) );
+! empty( $image_outside ) && array_push( $twae_wrapper_attr['class'], esc_attr( $image_outside ) );
 
 $this->add_render_attribute(
 	'twae-wrapper',
@@ -119,8 +115,7 @@ if ( 'compact' !== $layout ) {
 
 $twae_loop_obj = new Twae_Story_Loop( $settings );
 
-
-$html      .= '<!-- ========= Timeline Widget Pro For Elementor ' . TWAE_PRO_VERSION . ' ========= -->';
+$html      .= '<!-- ========= Timeline Widget Pro For Elementor ' . esc_html( TWAE_PRO_VERSION ) . ' ========= -->';
 $html      .= '<div ' . $this->get_render_attribute_string( 'twae-wrapper' ) . '>';
 $html      .= '    <div class="twae-start"></div>';
 $html      .= '    <div ' . $this->get_render_attribute_string( 'twae-line' ) . ' >';
@@ -142,7 +137,7 @@ if ( is_array( $data ) ) {
 		$sub_label_key   = $this->get_repeater_setting_key( 'twae_extra_label', 'twae_list', $index );
 		$description_key = $this->get_repeater_setting_key( 'twae_description', 'twae_list', $index );
 
-		$article_key = 'twae-article-' . $content['_id'];
+		$article_key = 'twae-article-' . esc_attr( $content['_id'] );
 
 		if ( 'compact' !== $layout ) {
 			if ( 'yes' !== $enable_popup ) {
@@ -173,7 +168,7 @@ if ( is_array( $data ) ) {
 		$repeater_key['sublabel_key']   = $sub_label_key;
 		$repeater_key['desc_key']       = $description_key;
 
-		$repeator_item_key = 'elementor-repeater-item-' . $content['_id'];
+		$repeator_item_key = 'elementor-repeater-item-' . esc_attr( $content['_id'] );
 
 		$twae_loop_obj->twae_story_loop( $content, $story_settings, $repeater_key, $twae_repeater_attributes, $enable_popup );
 		$media = Twae_Functions::twae_get_story_media( $content, $dir, $image_lightbox, $image_hover_effect );
@@ -193,10 +188,6 @@ if ( is_array( $data ) ) {
 
 		! empty( $left_aligned ) && array_push( $article_key_attr['class'], esc_attr( $left_aligned ) );
 		! empty( $icon_cls ) && array_push( $article_key_attr['class'], esc_attr( $icon_cls ) );
-		! empty( $twae_bg_hover ) && array_push( $article_key_attr['class'], esc_attr( $twae_bg_hover ) );
-		! empty( $label_content_top ) && array_push( $article_key_attr['class'], esc_attr( $label_content_top ) );
-		! empty( $label_content_inside ) && array_push( $article_key_attr['class'], esc_attr( $label_content_inside ) );
-		! empty( $image_outside ) && array_push( $article_key_attr['class'], esc_attr( $image_outside ) );
 		'twae-bg-multicolor' === $twae_bg_type && $article_key_attr['data-multicolor'] = esc_attr( $multicolor );
 		$this->add_render_attribute(
 			$article_key,
@@ -273,4 +264,3 @@ $html         .= '</div>
 </div>';
 
 echo $html;
-

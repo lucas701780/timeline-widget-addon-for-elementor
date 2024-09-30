@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $title_tag    = 'div';
 $line_filling = '';
-$layout       = $post_settings['layout'];
+$layout       = isset( $post_settings['layout'] ) ? sanitize_text_field( $post_settings['layout'] ) : '';
 
 if ( isset( $settings['center_line_filling'] ) && 'yes' === $settings['center_line_filling'] ) {
 	$line_filling = 'on';
@@ -16,9 +16,12 @@ if ( 'compact' === $layout ) {
 	$container_cls = 'twae-compact';
 }
 
-$space           = '';
-$pagination      = '';
-$ajax_pagination = '';
+$space                = '';
+$pagination           = '';
+$ajax_pagination      = '';
+$label_content_top    = isset( $post_settings['twae_post_label_content_top'] ) ? sanitize_text_field( $post_settings['twae_post_label_content_top'] ) : '';
+$post_image_outside   = isset( $post_settings['twae_post_image_outside_box'] ) ? sanitize_text_field( $post_settings['twae_post_image_outside_box'] ) : '';
+$label_content_inside = 'twae-label-content-top' !== $label_content_top && 'twae_image_outside' === $post_image_outside ? 'twae-label-content-inside' : ( isset( $post_settings['twae_post_label_inside'] ) ? sanitize_text_field( $post_settings['twae_post_label_inside'] ) : '' );
 
 $wrp_attr = array(
 	'id'    => 'twae-' . esc_attr( $widget_id ),
@@ -32,8 +35,16 @@ $wrp_attr = array(
 ! empty( $timeline_style ) && array_push( $wrp_attr['class'], esc_attr( $timeline_style ) );
 ! empty( $twae_bg_type ) && array_push( $wrp_attr['class'], esc_attr( $twae_bg_type ) );
 ! empty( $pagination ) && array_push( $wrp_attr['class'], esc_attr( $pagination ) );
+// Label content inside class.
+! empty( $label_content_inside ) && array_push( $wrp_attr['class'], esc_attr( $label_content_inside ) );
+// Label content top class.
+! empty( $label_content_top ) && array_push( $wrp_attr['class'], esc_attr( $label_content_top ) );
+// Image out of the box class.
+! empty( $post_image_outside ) && array_push( $wrp_attr['class'], esc_attr( $post_image_outside ) );
+// Background hover class.
+isset( $post_settings['twae_bg_hover'] ) && ! empty( $post_settings['twae_bg_hover'] ) && array_push( $wrp_attr['class'], esc_attr( $post_settings['twae_bg_hover'] ) );
 
-$vertical_pagination_type = $post_settings['vertical_pagination_type'];
+$vertical_pagination_type = isset( $post_settings['vertical_pagination_type'] ) ? sanitize_text_field( $post_settings['vertical_pagination_type'] ) : '';
 $query                    = new \WP_Query( $args );
 $total_pages              = $query->max_num_pages;
 $wrapper                  = '';

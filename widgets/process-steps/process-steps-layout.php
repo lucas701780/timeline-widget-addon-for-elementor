@@ -9,7 +9,7 @@ if ( $settings['cps_process_layout'] == 'Horizontal' ) {
 	$preset             = $settings['twae_preset_vertical_style'];
 	$pswfe_steps_layout = 'pswfe-vertical-steps';
 }
- echo '<ul class="' . esc_attr( $pswfe_steps_layout ) . '  pswfe-process ' . esc_attr( $preset ) . '">';
+echo '<ul class="' . esc_attr( $pswfe_steps_layout ) . ' pswfe-process ' . esc_attr( $preset ) . '">';
 if ( is_array( $data ) ) {
 
 	if ( $layout == 'Horizontal' ) {
@@ -28,7 +28,6 @@ foreach ( $data as $key => $item ) {
 	$open_new_tab = '_self';
 	if ( ! empty( $item['cps_website_link']['url'] ) && $item['cps_website_link']['is_external'] == 'on' ) {
 		$open_new_tab = '_blank';
-
 	}
 
 	$icon_type  = isset( $item['cps_selected_icon'] ) ? $item['cps_selected_icon'] : 'icon';
@@ -76,12 +75,12 @@ foreach ( $data as $key => $item ) {
 		\Elementor\Icons_Manager::render_icon( $item['cps_story_icon'], array( 'aria-hidden' => 'true' ) );
 		echo '</span>';
 	} elseif ( $icon_type == 'image' ) {
-
-		echo '<img src="' . esc_url( $item['cps_icon_image']['url'] ) . '" class="' . esc_attr( $pswfe_step_marker_image ) . '">';
+		if ( ! empty( $item['cps_icon_image']['url'] ) ) {
+			echo '<img src="' . esc_url( $item['cps_icon_image']['url'] ) . '" class="' . esc_attr( $pswfe_step_marker_image ) . '">';
+		}
 	} else {
 		if ( $icon_type == 'customtext' ) {
 			echo '<span class="' . esc_attr( $pswfe_step_marker_text ) . '">' . wp_kses_post( $item['cps_icon_text'] ) . '</span>';
-
 		}
 	}
 
@@ -97,8 +96,7 @@ foreach ( $data as $key => $item ) {
 	echo '<div class="pswfe-hover-animation ' . esc_attr( $settings['cps_hover_animation'] ) . '"></div>';
 	echo '</div>';
 
-
-	if ( $item['cps_title'] != '' || $item['cps_description'] != '' ) {
+	if ( ! empty( $item['cps_title'] ) || ! empty( $item['cps_description'] ) ) {
 		echo '<div class="' . esc_attr( $pswfe_step_content ) . '">';
 
 		echo '<div ' . $this->get_render_attribute_string( $title_key ) . '>' . wp_kses_post( $title_link ) . '</div>';

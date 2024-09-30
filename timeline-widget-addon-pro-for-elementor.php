@@ -3,12 +3,12 @@
  * Plugin Name: Timeline Widget Pro For Elementor
  * Description: Best timeline widget for Elementor page builder to showcase your personal or business stories in beautiful vertical or horizontal timeline layouts with many preset styles. <strong>[Elementor Addon]</strong>
  * Plugin URI:  https://cooltimeline.com
- * Version:     2.0.3
+ * Version:     2.1.2
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net
  * Text Domain: twae
- * Elementor tested up to: 3.22.1
- * Elementor Pro tested up to: 3.22.0
+ * Elementor tested up to: 3.23.1
+ * Elementor Pro tested up to: 3.23.0
  */
 
 
@@ -21,7 +21,7 @@ if ( defined( 'TWAE_PRO_VERSION' ) ) {
 	return;
 }
 
-define( 'TWAE_PRO_VERSION', '2.0.3' );
+define( 'TWAE_PRO_VERSION', '2.1.2' );
 define( 'TWAE_PRO_FILE', __FILE__ );
 define( 'TWAE_PRO_PATH', plugin_dir_path( TWAE_PRO_FILE ) );
 define( 'TWAE_PRO_URL', plugin_dir_url( TWAE_PRO_FILE ) );
@@ -103,7 +103,7 @@ final class Timeline_Widget_Pro_Addon {
 			require_once TWAE_PRO_PATH . '/admin/init-api.php';
 			require_once TWAE_PRO_PATH . '/admin/admin-notices.php';
 			require_once TWAE_PRO_PATH . '/admin/timeline-addon-page/timeline-addon-page.php';
-			cool_plugins_timeline_addons_settings_page( 'timeline', 'cool-plugins-timeline-addon', 'Timeline Addons', 'Timeline Addons', TWAE_PRO_URL . 'assets/images/timeline-icon-222.png' );
+			cool_plugins_timeline_addons_settings_page( 'timeline', 'cool-plugins-timeline-addon', 'Timeline Addons', 'Timeline Addons', esc_url( TWAE_PRO_URL . 'assets/images/timeline-icon-222.png' ) ); // Escape URL
 		}
 	}
 
@@ -189,7 +189,7 @@ final class Timeline_Widget_Pro_Addon {
 		// Check if Elementor plugin is active
 		if ( ! is_plugin_active( 'elementor/elementor.php' ) ) : ?>
 			<div class="notice notice-warning is-dismissible">
-				<p><?php echo sprintf( __( 'You must install and activate <a href="%s"  target="_blank" >Elementor Website Builder</a> to use "<strong>Timeline Widget Pro For Elementor</strong>".' ), 'https://wordpress.org/plugins/elementor/' ); ?></p>
+				<p><?php echo sprintf( __( 'You must install and activate <a href="%s" target="_blank" >Elementor Website Builder</a> to use "<strong>Timeline Widget Pro For Elementor</strong>".' ), esc_url( 'https://wordpress.org/plugins/elementor/' ) ); ?></p> <!-- Escape URL -->
 			</div>
 			<?php
 			deactivate_plugins( 'timeline-widget-addon-for-elementor-pro/timeline-widget-addon-pro-for-elementor.php' );

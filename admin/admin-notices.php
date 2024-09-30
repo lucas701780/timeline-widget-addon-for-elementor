@@ -5,26 +5,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Admin notice class for WordPress plugin.
- * This class can not be initialized or extended.
+ * This class cannot be initialized or extended.
  */
 
 /**************************************************************************************************
  *  HOW TO USE.
  * After including this file, use the below example to start creating admin notice / review box
  *
- * Two arguments, id & message are required and can not be ommitied.
- * id must be unique for every message or it will override the previous message with same id.
+ * Two arguments, id & message are required and cannot be omitted.
+ * id must be unique for every message or it will override the previous message with the same id.
  *
  *               create a simple admin text message
- *   twae_pro_create_admin_notice( array('id'=>'bp-greeting-mesage','message'=>'Hey there!') );
+ *   twae_pro_create_admin_notice( array('id'=>'bp-greeting-message','message'=>'Hey there!') );
  *
- *              create a admin text error message
- * twae_pro_create_admin_notice( array('id'=>'bp-error-mesage','message'=>'this is an example of error!','type'=>'error') );
+ *              create an admin text error message
+ * twae_pro_create_admin_notice( array('id'=>'bp-error-message','message'=>'this is an example of error!','type'=>'error') );
  * The argument 'type' can be: error, success, warning
  *
  *              create a review box by passing minimum arguments
  * $slug = 'bp';
- * update_option($slug . '_activation_time,strtotime('now') ); // must create an activation time
+ * update_option($slug . '_activation_time', strtotime('now')); // must create an activation time
  * twae_pro_create_admin_notice(
  *          array(
  *              'id'=>'bp_review_box',  // required and must be unique
@@ -47,13 +47,12 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 
 	final class TWAE_PRO_admin_notices {
 
-
 		private static $instance = null;
 		private $messages        = array();
 		private $version         = '1.0.0';
 
 		/**
-		 * initialize the class with single instance
+		 * Initialize the class with single instance
 		 */
 		public static function twae_pro_create_notice() {
 			if ( ! empty( self::$instance ) ) {
@@ -63,22 +62,16 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 		}
 
 		/**
-		 * add messages for admin notice
+		 * Add messages for admin notice
 		 *
 		 * @param array $notice this array contains $id,$message,$type,$class,$id
 		 */
 		public function twae_pro_add_message( $notice ) {
 			if ( ! isset( $notice['id'] ) || empty( $notice['id'] ) ) {
-				// $this->twae_pro_show_error('id is required for integrating admin notice.');
 				return;
 			}
 
-			if ( array_key_exists( $notice['id'], $this->messages ) ) {
-
-			}
-
 			if ( isset( $notice['review'] ) && true != (bool) $notice['review'] && ( ! isset( $notice['message'] ) || empty( $notice['message'] ) ) ) {
-				// $this->twae_pro_show_error('message can not be null. You must provide some text for message field');
 				return;
 			}
 			$message         = ( isset( $notice['message'] ) && ! empty( $notice['message'] ) ) ? wp_kses( $notice['message'], 'post' ) : null;
@@ -94,6 +87,7 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 				// $this->twae_pro_show_error( 'slug / plugin_name / review_url can not be empty if admin notice is set to review' );
 				return;
 			}
+
 			$this->messages[ $notice['id'] ] = array(
 				'message'         => $message,
 				'type'            => $type,
@@ -127,7 +121,6 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 		 */
 		public function twae_pro_show_notice() {
 			if ( count( $this->messages ) > 0 ) {
-
 				foreach ( $this->messages as $id => $message ) {
 					if ( true == (bool) $message['review'] ) {
 						$this->twae_pro_admin_notice_for_review( $id, $message );
@@ -139,13 +132,11 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 		}
 
 		/**
-		 * Due to the nature of private function. This must not be called directly
 		 * Create simple text/html admin notice and initialize required JS
 		 *
 		 * @param array $message This is an array of message object
 		 */
 		private function twae_pro_simple_notice( $id, $message ) {
-
 			if ( get_option( $id . '_remove_notice' ) ) {
 				return;
 			}
@@ -156,75 +147,67 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
                 $(".' . $id . '_admin_notice .notice-dismiss").css("border","2px solid red");
                 $(document).on("click",".' . $id . '_admin_notice button.notice-dismiss", function (event) {
                     var $this = $(this);
-                    var wrapper=$this.parents(".' . $id . '_admin_notice");
-                    var ajaxURL=wrapper.data("ajax-url");
+                    var wrapper = $this.parents(".' . $id . '_admin_notice");
+                    var ajaxURL = wrapper.data("ajax-url");
                     var id = wrapper.data("plugin-slug");
                     var wp_nonce = wrapper.data("wp-nonce");
                     $.post(ajaxURL, { "action":"twae_pro_admin_notice","id":id,"_nonce":wp_nonce }, function( data ) {
                         wrapper.slideUp("fast");
-                      }, "json");
+                    }, "json");
                 });
             });
             </script>';
 			$nonce   = wp_create_nonce( $id . '_notice_nonce' );
-			echo "<div class='" . $id . "_admin_notice $classes' data-ajax-url='" . admin_url( 'admin-ajax.php' ) . "' data-wp-nonce='" . $nonce . "' data-plugin-slug='$id'><p>" . $message['message'] . '</p></div>' . $script;
+			echo "<div class='" . esc_attr( $id . "_admin_notice $classes" ) . "' data-ajax-url='" . esc_url( admin_url( 'admin-ajax.php' ) ) . "' data-wp-nonce='" . esc_attr( $nonce ) . "' data-plugin-slug='" . esc_attr( $id ) . "'><p>" . wp_kses_post( $message['message'] ) . '</p></div>' . $script;
 		}
 
 		/**
-		 * This function decides if its good to show the review notice or not
+		 * This function decides if it's good to show the review notice or not
 		 * Review notice will only be displayed if $slug_activation_time is greater or equals to the 3 days
 		 */
 		private function twae_pro_admin_notice_for_review( $id, $messageObj ) {
-			// Everyone should not be able see the review message
 			if ( ! current_user_can( 'update_plugins' ) ) {
 				return;
 			}
 			$slug = $messageObj['slug'];
 			$days = $messageObj['review_interval'];
 			if ( get_option( $slug . '_activation_time' ) ) {
-				// get installation dates and rated settings
-				// $installation_date =date( 'Y-m-d h:i:s', get_option( $slug.'_activation_time' ));
 				$installation_date = date( 'Y-m-d h:i:s', strtotime( get_option( $slug . '_activation_time' ) ) );
 			} else {
-				// $this->twae_pro_show_error('Review notice can not be integrated. '.$slug.'_activation_time option is not set for the plugin');
 				return;
 			}
 
-			 // check if user already rated
 			if ( get_option( $slug . '_spare_me' ) ) {
 				return;
 			}
 
-				// grab plugin installation date and compare it with current date
-				$display_date = date( 'Y-m-d h:i:s' );
-				$install_date = new DateTime( $installation_date );
-				$current_date = new DateTime( $display_date );
-				$difference   = $install_date->diff( $current_date );
-				$diff_days    = $difference->days;
+			$display_date = date( 'Y-m-d h:i:s' );
+			$install_date = new DateTime( $installation_date );
+			$current_date = new DateTime( $display_date );
+			$difference   = $install_date->diff( $current_date );
+			$diff_days    = $difference->days;
 
-				// check if installation days is greator then week
 			if ( isset( $diff_days ) && $diff_days >= $days ) {
 				echo $this->twae_pro_create_notice_content( $id, $messageObj );
 			}
 		}
 
 		/**
-		 * Generate review notice HTMl with all required css & js
+		 * Generate review notice HTML with all required CSS & JS
 		 *
 		 * @param array $messageObj array of a message object
 		 **/
 		function twae_pro_create_notice_content( $id, $messageObj ) {
-
 			$ajax_url           = admin_url( 'admin-ajax.php' );
 			$ajax_callback      = 'twae_pro_admin_review_notice_dismiss';
 			$wrap_cls           = 'notice notice-info is-dismissible';
-			$img_path           = ( isset( $messageObj['logo'] ) && ! empty( $messageObj['logo'] ) ) ? $messageObj['logo'] : null;
-			$slug               = $messageObj['slug'];
-			$plugin_name        = $messageObj['plugin_name'];
-			$like_it_text       = 'Rate Now! ★★★★★';
+			$img_path           = ( isset( $messageObj['logo'] ) && ! empty( $messageObj['logo'] ) ) ? esc_url( $messageObj['logo'] ) : null;
+			$slug               = esc_attr( $messageObj['slug'] );
+			$plugin_name        = esc_html( $messageObj['plugin_name'] );
+			$like_it_text       = esc_html__( 'Rate Now! ★★★★★', 'twae' );
 			$already_rated_text = esc_html__( 'I already rated it', 'twae' );
 			$not_like_it_text   = esc_html__( 'Not Interested', 'twae' );
-			$plugin_link        = $messageObj['review_url'];
+			$plugin_link        = esc_url( $messageObj['review_url'] );
 			$review_nonce       = wp_create_nonce( $id . '_review_nonce' );
 			$message            = "Thanks for using <b>$plugin_name</b> - WordPress plugin.
         We hope you liked it ! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href='https://coolplugins.net' target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
@@ -248,17 +231,17 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
         </div>';
 			$script = '<script>
         jQuery(document).ready(function ($) {
-            $(document).on("click", "#' . $id . ' .' . $slug . '_dismiss_notice", function (event) {
+            $(document).on("click", "#' . esc_attr( $id ) . ' .' . esc_attr( $slug ) . '_dismiss_notice", function (event) {
                 var $this = $(this);
-                var wrapper=$this.parents(".' . $slug . '-feedback-notice-wrapper");
-                var ajaxURL=wrapper.data("ajax-url");
-                var ajaxCallback=wrapper.data("ajax-callback");
+                var wrapper = $this.parents(".' . esc_attr( $slug ) . '-feedback-notice-wrapper");
+                var ajaxURL = wrapper.data("ajax-url");
+                var ajaxCallback = wrapper.data("ajax-callback");
                 var slug = wrapper.data("plugin-slug");
                 var id = wrapper.attr("id");
                 var wp_nonce = wrapper.data("wp-nonce");
-                $.post(ajaxURL, { "action":ajaxCallback,"slug":slug,"id":id,"_nonce":wp_nonce }, function( data ) {
+                $.post(ajaxURL, { "action": ajaxCallback, "slug": slug, "id": id, "_nonce": wp_nonce }, function( data ) {
                     wrapper.slideUp("fast");
-                  })
+                });
             });
         });
         </script>';
@@ -281,7 +264,6 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 				esc_attr( $review_nonce ), // 12
 				esc_attr( $id ) // 13
 			);
-
 		}
 
 		/**
@@ -295,11 +277,11 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 
 			if ( check_ajax_referer( $nonce_key, '_nonce' ) ) {
 				update_option( $slug . '_spare_me', 'yes' );
-				echo json_encode( array( 'success' => 'true' ) );
+				wp_send_json_success();
 			} else {
-				// echo json_encode( array("error"=>"nonce verification failed!") );
+				wp_send_json_error( array( 'error' => 'nonce verification failed!' ) );
 			}
-				exit;
+			exit;
 		}
 
 		/************************************************************
@@ -309,13 +291,12 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 		public function twae_pro_admin_notice_dismiss() {
 			$id       = htmlspecialchars( $_REQUEST['id'], ENT_QUOTES );
 			$wp_nonce = $id . '_notice_nonce';
-			if ( check_ajax_referer( $wp_nonce, '_nonce' ) ) {
-				$us = update_option( $id . '_remove_notice', 'yes' );
-				die( 'Admin message removed!' );
+			if ( check_ajax_referer( $wp_nonce, '_nonce', false ) ) {
+				update_option( $id . '_remove_notice', 'yes' );
+				wp_send_json_success( 'Admin message removed!' );
 			} else {
-				die( 'nounce verification failed!' );
+				wp_send_json_error( array( 'error' => 'nonce verification failed!' ) );
 			}
-
 		}
 
 		/**************************************************************
@@ -324,17 +305,18 @@ if ( ! class_exists( 'TWAE_PRO_admin_notices' ) ) :
 		 **************************************************************/
 		private function twae_pro_show_error( $error_text ) {
 			$er  = "<div style='text-align:center;margin-left:20px;padding:10px;background-color: #cc0000; color: #fce94f; font-size: x-large;'>";
-			$er .= 'Error: ' . $error_text;
+			$er .= 'Error: ' . esc_html( $error_text );
 			$er .= '</div>';
 			echo wp_kses_post( $er );
 		}
 
 	}   // end of main class TWAE_PRO_admin_notices;
 endif;
-	/********************************************************************************
-	 * A global function to create admin notice/review box using the above class.   *
-	 * This function makes it easy to use above class                               *
-	 ********************************************************************************/
+
+/********************************************************************************
+ * A global function to create admin notice/review box using the above class.   *
+ * This function makes it easy to use above class                               *
+ ********************************************************************************/
 function twae_pro_create_admin_notice( $notice ) {
 	// Do not initialize anything if it's not WordPress admin dashboard
 	if ( ! is_admin() ) {

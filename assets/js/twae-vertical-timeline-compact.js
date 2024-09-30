@@ -226,7 +226,11 @@ class CompactTimeline extends elementorModules.frontend.handlers.Base {
 
             for (var i = 0; i < timelineEntry.length; i++) {
 
-                timelineEntry_position = jQuery(timelineEntry[i]).offset().top;
+                const icon = jQuery(timelineEntry[i]).find('.twae-icon, .twae-icondot');
+
+                const iconPosition = icon.length > 0 ? icon[0].offsetTop : 0;
+
+                timelineEntry_position = jQuery(timelineEntry[i]).offset().top + iconPosition;
 
                 timelineEntry_top = timelineEntry_position - rootElement.scrollTop;
 

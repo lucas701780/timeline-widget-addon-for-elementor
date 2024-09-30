@@ -63,10 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	};
 
    var random_number = Math.floor(Math.random() * 100);  
-	var line_filling='';
-   if(settings.center_line_filling!="undefined" && settings.center_line_filling=="yes"){
-	line_filling="on";
-   }
+	var line_filling=settings.center_line_filling!="undefined" && settings.center_line_filling=="yes" ? "on" : "";
 
 	var twae_bg_hover='';
 	if(settings.twae_cbox_background_type_hover!=='undefined' && settings.twae_cbox_background_type_hover=='simple'){
@@ -119,7 +116,7 @@ if(settings.twae_layout != 'compact'){
 	}
 #>
 
-<div id="twae-wrapper-{{widgetId}}" class="twae-vertical twae-wrapper {{ timeline_layout_wrapper }} {{timeline_style}} {{twae_bg_type}}"
+<div id="twae-wrapper-{{widgetId}}" class="twae-vertical twae-wrapper {{ timeline_layout_wrapper }} {{timeline_style}} {{twae_bg_type}} {{twae_bg_hover}} {{label_content_inside}} {{label_content_top}} {{image_outside}}"
 data-line-filling="{{line_filling}}" data-enable-popup="{{enablePopup}}" data-style="{{timeline_style}}" data-space="{{space}}">
 
 	<div class="twae-start"></div>  
@@ -162,8 +159,6 @@ data-line-filling="{{line_filling}}" data-enable-popup="{{enablePopup}}" data-st
 			else{
 				icon_empty = icon_empty_default; 
 			}
-			  
-		   
 
 			var year_key = view.getRepeaterSettingKey( 'twae_year', 'twae_list',index ),
 			date_label_key = view.getRepeaterSettingKey( 'twae_date_label', 'twae_list',index ),
@@ -207,7 +202,7 @@ data-line-filling="{{line_filling}}" data-enable-popup="{{enablePopup}}" data-st
 				}
 	 }  #>
 
-				<article id="twae-{{ item._id }}" class="twae-story elementor-repeater-item-{{ item._id }} twae-repeater-item {{ story_alignment }} {{icon_empty}} {{twae_bg_hover}} {{label_content_inside}} {{label_content_top}} {{image_outside}}" data-multicolor="{{multiColor}}">
+				<div id="twae-{{ item._id }}" class="twae-story elementor-repeater-item-{{ item._id }} twae-repeater-item {{ story_alignment }} {{icon_empty}}" data-multicolor="{{multiColor}}">
 					<# 
 						if(label_content_inside == '' && label_content_top == ''){ 
 					#>								  
@@ -317,13 +312,13 @@ data-line-filling="{{line_filling}}" data-enable-popup="{{enablePopup}}" data-st
 							</div>
 							<div id="twae-popup-{{ item._id }}" class="twae-popup-content elementor-repeater-item-{{ item._id }}" style="display:none;"> 
 								 <?php require TWAE_PRO_PATH . 'widgets/story-timeline/editor-layouts/story-content-template.php'; ?>
-							<div>
+							</div>
 						 <# }else{ #>  
 							 <?php require TWAE_PRO_PATH . 'widgets/story-timeline/editor-layouts/story-content-template.php'; ?>
 							<# }   #>  
 						
 							
-						 </article>            
+						 </div>            
 			   
  <#  
 if('twae-bg-multicolor' === twae_bg_type){

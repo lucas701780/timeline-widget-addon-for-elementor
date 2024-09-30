@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class TWAE_PRO_Main {
 
-
 	/**
 	 * Minimum PHP Version
 	 *
@@ -53,7 +52,7 @@ final class TWAE_PRO_Main {
 	/**
 	 * Constructor
 	 *
-	 * Perform some compatibility checks to make sure basic requirements are meet.
+	 * Perform some compatibility checks to make sure basic requirements are met.
 	 * If all compatibility checks pass, initialize the functionality.
 	 *
 	 * @since 1.0.0
@@ -80,7 +79,7 @@ final class TWAE_PRO_Main {
 		$dependencies = array( 'elementor-editor' );
 		wp_enqueue_script(
 			'twae-paste-js',
-			$src,
+			esc_url( $src ),
 			$dependencies,
 			TWAE_PRO_VERSION,
 			true
@@ -101,22 +100,21 @@ final class TWAE_PRO_Main {
 	 * Register a custom category for panel widgets.
 	 */
 	public function register_timeline_category() {
-
-			\Elementor\Plugin::$instance->elements_manager->add_category(
-				'twae',              // The name of the category
-				array(
-					'title' => esc_html__( 'Timeline Widgets', 'twae' ),
-					'icon'  => 'fa fa-header', // Default icon
-				),
-				1 // Position
-			); // Register a custom category for timeline widgets.
+		\Elementor\Plugin::$instance->elements_manager->add_category(
+			'twae',              // The name of the category
+			array(
+				'title' => esc_html__( 'Timeline Widgets', 'twae' ),
+				'icon'  => 'fa fa-header', // Default icon
+			),
+			1 // Position
+		); // Register a custom category for timeline widgets.
 	}
 
 	/**
 	 * Enqueue styles for the editor.
 	 */
 	function twae_plugin_editor_styles() {
-		wp_enqueue_style( 'twae-disabled-widget', TWAE_PRO_URL . 'admin/preset/disabled-widget.css', array() ); // Enqueue styles for the disabled widget.
+		wp_enqueue_style( 'twae-disabled-widget', esc_url( TWAE_PRO_URL . 'admin/preset/disabled-widget.css' ), array() ); // Enqueue styles for the disabled widget.
 	}
 
 	/**
@@ -158,7 +156,7 @@ final class TWAE_PRO_Main {
 			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'twae' ),
 			'<strong>' . esc_html__( 'Timeline Widget Pro For Elementor', 'twae' ) . '</strong>',
 			'<strong>' . esc_html__( 'PHP', 'twae' ) . '</strong>',
-			self::MINIMUM_PHP_VERSION
+			esc_html( self::MINIMUM_PHP_VERSION )
 		);
 
 		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message ); // Display an admin notice for the minimum PHP version requirement.
@@ -182,8 +180,9 @@ final class TWAE_PRO_Main {
 		if ( function_exists( 'is_plugin_active' ) ) {
 			if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 				require_once TWAE_PRO_PATH . 'includes/class-twae-wpml-translation.php'; // Include the WPML translation class if WPML plugin is active.
+				require_once TWAE_PRO_PATH . 'includes/class-twae-wpml-process-steps.php'; // Include the process step WPML translation class if WPML plugin is active.
 				add_filter( 'wpml_elementor_widgets_to_translate', array( $this, 'timeline_widgets_to_translate_filter' ) ); // Add a filter for WPML translation of timeline widgets.
-			};
+			}
 		}
 
 	}
@@ -226,12 +225,17 @@ final class TWAE_PRO_Main {
 	 * @param array $widget all elementor widgets.
 	 */
 	public function timeline_widgets_to_translate_filter( $widget ) {
-		$widget['timeline-widget-addon']     = array(
+		$widget['timeline-widget-addon']         = array(
 			'conditions'        => array( 'widgetType' => 'timeline-widget-addon' ),
 			'fields'            => array(),
 			'integration-class' => 'TWAE_WPML_TRANSLATION',
 		); // Add WPML translation support for the timeline widget addon.
-		$widget['twae-post-timeline-widget'] = array(
+		$widget['timeline-process-steps-widget'] = array(
+			'conditions'        => array( 'widgetType' => 'timeline-process-steps-widget' ),
+			'fields'            => array(),
+			'integration-class' => 'TWAE_WPML_PROCESS_STEPS',
+		);
+		$widget['twae-post-timeline-widget']     = array(
 			'conditions' => array( 'widgetType' => 'twae-post-timeline-widget' ),
 			'fields'     => array(
 				array(

@@ -11,11 +11,11 @@ class steps_process_widget extends \Elementor\Widget_Base {
 	public function __construct( $data = array(), $args = null ) {
 		parent::__construct( $data, $args );
 
-		wp_register_style( 'cps-horizontal-process', TWAE_PRO_URL . 'assets/css/horizontal-process.css', TWAE_PRO_VERSION, true );
-		wp_register_style( 'cps-vertical-process', TWAE_PRO_URL . 'assets/css/vertical-process.css', TWAE_PRO_VERSION, true );
-		wp_register_style( 'cps-hover-style', TWAE_PRO_URL . 'assets/css/hover.css', TWAE_PRO_VERSION, true );
-		wp_register_style( 'cps-font-awesome-5-all', ELEMENTOR_ASSETS_URL . 'lib/font-awesome/css/all.css', array(), TWAE_PRO_VERSION, 'all' );// load elementor fontawesome
-
+		// Ensure that the URLs are properly escaped to prevent XSS vulnerabilities
+		wp_register_style( 'cps-horizontal-process', esc_url( TWAE_PRO_URL . 'assets/css/horizontal-process.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_style( 'cps-vertical-process', esc_url( TWAE_PRO_URL . 'assets/css/vertical-process.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_style( 'cps-hover-style', esc_url( TWAE_PRO_URL . 'assets/css/hover.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_style( 'cps-font-awesome-5-all', esc_url( ELEMENTOR_ASSETS_URL . 'lib/font-awesome/css/all.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' ); // load elementor fontawesome
 	}
 
 	public function get_style_depends() {

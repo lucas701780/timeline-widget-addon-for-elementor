@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class twae_functions
+ * Class Twae_Functions
  */
 class Twae_Functions {
 
@@ -21,7 +21,7 @@ class Twae_Functions {
 	 *
 	 * @return array The array of animation types
 	 */
-	public static function twae_pro_amination_array() {
+	public static function twae_pro_animation_array() {
 
 		$animations = array(
 			'none'            => 'none',
@@ -88,9 +88,9 @@ class Twae_Functions {
 	 */
 	public static function twae_pro_query_args( $settings, $query = 'simple', $page_no = '' ) {
 		// Set the post type, order, and limit based on the provided settings.
-		$post_type  = $settings['post_type'];
-		$order      = $settings['order'];
-		$show_posts = $settings['show_posts'];
+		$post_type  = sanitize_text_field( $settings['post_type'] );
+		$order      = sanitize_text_field( $settings['order'] );
+		$show_posts = intval( $settings['show_posts'] );
 		$limit      = $show_posts;
 
 		// Determine the paged and offset values based on the query type.
@@ -98,10 +98,10 @@ class Twae_Functions {
 			$paged  = 1;
 			$offset = 0;
 		} elseif ( 'ajax' === $query ) {
-			$paged  = ! empty( $page_no ) ? $page_no : 1;
+			$paged  = ! empty( $page_no ) ? intval( $page_no ) : 1;
 			$offset = $page_no * $limit;
 		} else {
-			$paged  = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+			$paged  = ( get_query_var( 'paged' ) ) ? intval( get_query_var( 'paged' ) ) : 1;
 			$offset = ( $limit * $paged ) - $limit;
 		}
 
@@ -125,10 +125,10 @@ class Twae_Functions {
 
 			$taxonomies = get_object_taxonomies( $post_type, 'objects' );
 			foreach ( $taxonomies as $object ) {
-				$tax_key = 'twae_post_' . $object->name . '';
+				$tax_key = 'twae_post_' . sanitize_key( $object->name );
 				if ( ! empty( $settings[ $tax_key ] ) ) {
 					$args['tax_query'][] = array(
-						'taxonomy' => $object->name,
+						'taxonomy' => sanitize_key( $object->name ),
 						'field'    => 'term_id',
 						'terms'    => $settings[ $tax_key ],
 					);
@@ -150,15 +150,15 @@ class Twae_Functions {
 	 * @return string The type of video
 	 */
 	public static function twae_video_type( $url ) {
-		if ( strpos( $url, 'youtube' ) > 0 || strpos( $url, 'youtu.be' ) > 0 ) {
+		$url = esc_url( $url );
+		if ( strpos( $url, 'youtube' ) !== false || strpos( $url, 'youtu.be' ) !== false ) {
 			return 'youtube';
-		} elseif ( strpos( $url, 'vimeo' ) > 0 ) {
+		} elseif ( strpos( $url, 'vimeo' ) !== false ) {
 			return 'vimeo';
 		} else {
 			return 'unknown';
 		}
 	}
-
 
 	/**
 	 * Retrieve and return the icons for a post.
@@ -167,9 +167,9 @@ class Twae_Functions {
 	 * @param string $post_custom_icon The custom icon for the post.
 	 * @return string The post icons
 	 */
-	public static function twae_get_post_icons( $post_custom_icon ) {
+	public static function twae_render_icon_html( $icon_name ) {
 		ob_start();
-		\Elementor\Icons_Manager::render_icon( $post_custom_icon, array( 'aria-hidden' => 'true' ) );
+		\Elementor\Icons_Manager::render_icon( $icon_name, array( 'aria-hidden' => 'true' ) );
 		$render_icon = ob_get_contents();
 		ob_end_clean();
 		return $render_icon;
@@ -184,31 +184,32 @@ class Twae_Functions {
 	 * @return array The post settings
 	 */
 	public static function twae_post_timeline_settings( $settings ) {
-		$layout                  = isset( $settings['twae_post_layout'] ) ? $settings['twae_post_layout'] : 'centered';
+		$layout                  = isset( $settings['twae_post_layout'] ) ? sanitize_text_field( $settings['twae_post_layout'] ) : 'centered';
+		$post_type               = isset( $settings['twae_post_post_type'] ) ? sanitize_text_field( $settings['twae_post_post_type'] ) : 'post';
 		$timeline_style          = '';
 		$enable_hr_ajax_loadmore = 'no';
 		$pagination_type         = 'default';
 
 		if ( 'horizontal' === $layout || 'horizontal-bottom' === $layout || 'horizontal-highlighted' === $layout ) {
-			$timeline_style          = isset( $settings['twae_post_hr_style'] ) ? $settings['twae_post_hr_style'] : 'style-1';
-			$enable_hr_ajax_loadmore = isset( $settings['twae_post_hr_ajax_loadmore'] ) && ! empty( $settings['twae_post_hr_ajax_loadmore'] ) ? $settings['twae_post_hr_ajax_loadmore'] : 'no';
+			$timeline_style          = isset( $settings['twae_post_hr_style'] ) ? sanitize_text_field( $settings['twae_post_hr_style'] ) : 'style-1';
+			$enable_hr_ajax_loadmore = isset( $settings['twae_post_hr_ajax_loadmore'] ) && ! empty( $settings['twae_post_hr_ajax_loadmore'] ) ? sanitize_text_field( $settings['twae_post_hr_ajax_loadmore'] ) : 'no';
 		} else {
-			$timeline_style = isset( $settings['twae_post_vertical_style'] ) ? $settings['twae_post_vertical_style'] : 'style-1';
+			$timeline_style = isset( $settings['twae_post_vertical_style'] ) ? sanitize_text_field( $settings['twae_post_vertical_style'] ) : 'style-1';
 		}
 		if ( 'horizontal' !== $layout || 'horizontal-bottom' !== $layout ) {
-			$pagination_type = isset( $settings['twae_post_pagination_type'] ) ? $settings['twae_post_pagination_type'] : 'default';
+			$pagination_type = isset( $settings['twae_post_pagination_type'] ) ? sanitize_text_field( $settings['twae_post_pagination_type'] ) : 'default';
 		}
 
-		$sides_to_show = isset( $settings['twae_post_slides_to_show']['size'] ) && ! empty( $settings['twae_post_slides_to_show']['size'] ) ? $settings['twae_post_slides_to_show']['size'] : 2;
+		$sides_to_show = isset( $settings['twae_post_slides_to_show']['size'] ) && ! empty( $settings['twae_post_slides_to_show']['size'] ) ? intval( $settings['twae_post_slides_to_show']['size'] ) : 2;
 		// slides to show for clean design.
-		$clean_sides_to_show = isset( $settings['twae_post_clean_slides_to_show']['size'] ) && ! empty( $settings['twae_post_clean_slides_to_show']['size'] ) ? $settings['twae_post_clean_slides_to_show']['size'] : 3;
+		$clean_sides_to_show = isset( $settings['twae_post_clean_slides_to_show']['size'] ) && ! empty( $settings['twae_post_clean_slides_to_show']['size'] ) ? intval( $settings['twae_post_clean_slides_to_show']['size'] ) : 3;
 
-		$image_width = isset( $settings['twae_post_image_size'] ) ? $settings['twae_post_image_size'] : 'large';
+		$image_width = isset( $settings['twae_post_image_size'] ) ? sanitize_text_field( $settings['twae_post_image_size'] ) : 'large';
 
-		$date_format = isset( $settings['twae_post_date_format'] ) ? $settings['twae_post_date_format'] : 'j F';
+		$date_format = isset( $settings['twae_post_date_format'] ) ? sanitize_text_field( $settings['twae_post_date_format'] ) : 'j F';
 
 		if ( 'custom' === $date_format ) {
-			$custom_date_format = isset( $settings['twae_post_custom_date_format'] ) ? $settings['twae_post_custom_date_format'] : 'j M';
+			$custom_date_format = isset( $settings['twae_post_custom_date_format'] ) ? wp_kses_post( $settings['twae_post_custom_date_format'] ) : 'j M';
 			$date_format        = $custom_date_format;
 		}
 
@@ -224,8 +225,8 @@ class Twae_Functions {
 			$timeline_layout_wrapper = 'twae-horizontal-wrapper';
 		}
 
-		$show_posts = ! empty( $settings['twae_post_show_posts'] ) ? $settings['twae_post_show_posts'] : '10';
-		$space      = isset( $settings['twae_post_space_between']['size'] ) ? $settings['twae_post_space_between']['size'] : '20';
+		$show_posts = ! empty( $settings['twae_post_show_posts'] ) ? intval( $settings['twae_post_show_posts'] ) : 10;
+		$space      = isset( $settings['twae_post_space_between']['size'] ) ? intval( $settings['twae_post_space_between']['size'] ) : 20;
 
 		// Background Hover Type.
 		if ( isset( $settings['twae_cbox_background_type_hover'] ) && 'simple' === $settings['twae_cbox_background_type_hover'] ) {
@@ -234,7 +235,7 @@ class Twae_Functions {
 			$twae_bg_hover = '';
 		}
 
-			$enable_popup = '';
+		$enable_popup = '';
 		if ( ( isset( $settings['twae_enable_popup'] ) && 'yes' === $settings['twae_enable_popup'] ) || 'style-4' === $timeline_style ) {
 			$enable_popup = 'yes';
 		} else {
@@ -248,38 +249,23 @@ class Twae_Functions {
 				$connector_style = 'twae-arrow';
 			}
 		} else {
-			$connector_style = isset( $settings['twae_cbox_connector_style'] ) ? $settings['twae_cbox_connector_style'] : 'twae-arrow';
-		}
-
-		if ( isset( $settings['twae_icon_position']['size'] ) ) {
-			// Horizontal Icon Position.
-			if ( $settings['twae_icon_position']['size'] < 40 && $settings['twae_icon_position']['size'] >= 1 ) {
-				$twae_icon_position = 'twae-position-40-minus';
-			} elseif ( $settings['twae_icon_position']['size'] > 50 && $settings['twae_icon_position']['size'] <= 60 ) {
-				$twae_icon_position = 'twae-position-50-60';
-			} elseif ( $settings['twae_icon_position']['size'] > 60 && $settings['twae_icon_position']['size'] <= 100 ) {
-				$twae_icon_position = 'twae-position-60-plus';
-			} else {
-				$twae_icon_position = 'twae-position-40-50';
-			}
-		} else {
-			$twae_icon_position = 'twae-position-40-50';
+			$connector_style = isset( $settings['twae_cbox_connector_style'] ) ? sanitize_text_field( $settings['twae_cbox_connector_style'] ) : 'twae-arrow';
 		}
 
 		$post_settings = array(
 			'layout'                            => $layout,
-			'autoplay'                          => isset( $settings['twae_post_autoplay'] ) ? $settings['twae_post_autoplay'] : 'false',
-			'sidesHeight'                       => isset( $settings['twae_post_slides_height'] ) ? $settings['twae_post_slides_height'] : 'default-height',
-			'post_type'                         => isset( $settings['twae_post_post_type'] ) ? $settings['twae_post_post_type'] : 'post',
+			'autoplay'                          => isset( $settings['twae_post_autoplay'] ) ? sanitize_text_field( $settings['twae_post_autoplay'] ) : 'false',
+			'sidesHeight'                       => isset( $settings['twae_post_slides_height'] ) ? sanitize_text_field( $settings['twae_post_slides_height'] ) : 'default-height',
+			'post_type'                         => $post_type,
 			'date_format'                       => $date_format,
-			'order'                             => isset( $settings['twae_post_order'] ) ? $settings['twae_post_order'] : 'DESC',
-			'desc'                              => isset( $settings['twae_post_desc'] ) ? $settings['twae_post_desc'] : 'summary',
+			'order'                             => isset( $settings['twae_post_order'] ) ? sanitize_text_field( $settings['twae_post_order'] ) : 'DESC',
+			'desc'                              => isset( $settings['twae_post_desc'] ) ? sanitize_text_field( $settings['twae_post_desc'] ) : 'summary',
 			'image_size'                        => $image_width,
-			'animation'                         => isset( $settings['twae_post_animation'] ) ? $settings['twae_post_animation'] : 'none',
-			'post_date'                         => isset( $settings['twae_post_date'] ) ? $settings['twae_post_date'] : 'published',
-			'custom_metakey'                    => isset( $settings['twae_post_custom_metakey'] ) ? $settings['twae_post_custom_metakey'] : '',
+			'animation'                         => isset( $settings['twae_post_animation'] ) ? sanitize_text_field( $settings['twae_post_animation'] ) : 'none',
+			'post_date'                         => isset( $settings['twae_post_date'] ) ? sanitize_text_field( $settings['twae_post_date'] ) : 'published',
+			'custom_metakey'                    => isset( $settings['twae_post_custom_metakey'] ) ? sanitize_text_field( $settings['twae_post_custom_metakey'] ) : '',
 			'display_icon'                      => isset( $settings['twae_post_show_icon'] ) ? esc_html( $settings['twae_post_show_icon'] ) : '',
-			'icon_type'                         => isset( $settings['twae_post_icon_type'] ) ? $settings['twae_post_icon_type'] : 'custom',
+			'icon_type'                         => isset( $settings['twae_post_icon_type'] ) ? sanitize_text_field( $settings['twae_post_icon_type'] ) : 'custom',
 			'post_custom_icon'                  => isset( $settings['twae_post_custom_icon'] ) ? $settings['twae_post_custom_icon'] : 'far fa-clock',
 			'no_post_msg'                       => $no_post_msg,
 			'sidesToShow'                       => $sides_to_show,
@@ -292,27 +278,37 @@ class Twae_Functions {
 			'space'                             => $space,
 			'vertical_pagination_type'          => $pagination_type,
 			'twae_bg_hover'                     => $twae_bg_hover,
-			'twae_icon_position'                => $twae_icon_position,
 			'enable_popup'                      => $enable_popup,
 			'connector_style'                   => $connector_style,
 			'image_size'                        => $image_width,
-			'twae_post_read_more'               => $settings['twae_post_read_more'],
-			'twae_post_readmore_text'           => $settings['twae_post_readmore_text'],
-			'twae_post_desc_length'             => $settings['twae_post_desc_length'],
-			'twae_post_post_tag'                => $settings['twae_post_post_tag'],
-			'twae_post_category'                => $settings['twae_post_category'],
-			'page_text'                         => $settings['twae_post_page_text_change'],
-			'of_text'                           => $settings['twae_post_of_text_change'],
-			'ajax_button'                       => $settings['twae_post_load_more_change'],
-			'twae_label_background'             => isset( $settings['twae_label_background'] ) ? $settings['twae_label_background'] : '',
-			'twae_label_connector_style'        => isset( $settings['twae_label_connector_style'] ) ? $settings['twae_label_connector_style'] : '',
-			'twae_post_image_lightbox_settings' => isset( $settings['twae_post_image_lightbox_settings'] ) ? $settings['twae_post_image_lightbox_settings'] : '',
+			'twae_post_read_more'               => isset( $settings['twae_post_read_more'] ) ? sanitize_text_field( $settings['twae_post_read_more'] ) : '',
+			'twae_post_readmore_text'           => isset( $settings['twae_post_readmore_text'] ) ? sanitize_text_field( $settings['twae_post_readmore_text'] ) : '',
+			'twae_post_desc_length'             => isset( $settings['twae_post_desc_length'] ) ? intval( $settings['twae_post_desc_length'] ) : '',
+			'page_text'                         => isset( $settings['twae_post_page_text_change'] ) ? sanitize_text_field( $settings['twae_post_page_text_change'] ) : '',
+			'of_text'                           => isset( $settings['twae_post_of_text_change'] ) ? sanitize_text_field( $settings['twae_post_of_text_change'] ) : '',
+			'ajax_button'                       => isset( $settings['twae_post_load_more_change'] ) ? sanitize_text_field( $settings['twae_post_load_more_change'] ) : '',
+			'twae_label_background'             => isset( $settings['twae_label_background'] ) ? sanitize_text_field( $settings['twae_label_background'] ) : '',
+			'twae_label_connector_style'        => isset( $settings['twae_label_connector_style'] ) ? sanitize_text_field( $settings['twae_label_connector_style'] ) : '',
+			'twae_post_image_lightbox_settings' => isset( $settings['twae_post_image_lightbox_settings'] ) ? sanitize_text_field( $settings['twae_post_image_lightbox_settings'] ) : '',
 			'twae_post_image_hover_effect'      => 'yes' === $settings['twae_post_image_hover_effect'] && 'yes' !== $enable_popup ? ' twae-img-effect' : '',
-			'twae_post_label_content_top'       => 'no' !== $settings['twae_post_label_content_top'] ? $settings['twae_post_label_content_top'] : '',
-			'twae_post_label_inside'            => 'no' !== $settings['twae_post_label_inside'] ? $settings['twae_post_label_inside'] : '',
-			'twae_post_image_outside_box'       => 'no' !== $settings['twae_post_image_outside_box'] && 'yes' !== $enable_popup ? $settings['twae_post_image_outside_box'] : '',
-			'twae_background_type'              => isset( $settings['twae_cbox_background_type'] ) ? $settings['twae_cbox_background_type'] : 'simple',
+			'twae_post_label_content_top'       => 'no' !== $settings['twae_post_label_content_top'] ? sanitize_text_field( $settings['twae_post_label_content_top'] ) : '',
+			'twae_post_label_inside'            => 'no' !== $settings['twae_post_label_inside'] ? sanitize_text_field( $settings['twae_post_label_inside'] ) : '',
+			'twae_post_image_outside_box'       => 'no' !== $settings['twae_post_image_outside_box'] && 'yes' !== $enable_popup ? sanitize_text_field( $settings['twae_post_image_outside_box'] ) : '',
+			'twae_background_type'              => isset( $settings['twae_cbox_background_type'] ) ? sanitize_text_field( $settings['twae_cbox_background_type'] ) : 'simple',
 		);
+
+		// Post taxonomies
+		if ( 'page' !== $post_type ) {
+			$args['tax_query'] = array();
+
+			$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+			foreach ( $taxonomies as $object ) {
+				$tax_key = 'twae_post_' . sanitize_key( $object->name );
+				if ( isset( $settings[ $tax_key ] ) && ! empty( $settings[ $tax_key ] ) ) {
+					$post_settings[ $tax_key ] = $settings[ $tax_key ];
+				}
+			}
+		}
 
 		return $post_settings;
 
@@ -332,8 +328,9 @@ class Twae_Functions {
 
 		if ( $total_pages > 1 && 'ajax_load_more' === $post_settings['vertical_pagination_type'] ) {
 			$content .= '<div class="twae-ajax-load-more twae-button"><button class="elementor-button">
-			<span class="lm_active_state" style="display:none"><i class="fas fa-spinner fa-spin"></i> ' . __( 'Loading', 'twae' ) . '</span>
-			<span class="lm_default_state">' . __( esc_html( $post_settings['ajax_button'] ), 'twae' ) . '</span></button></div>';
+			<span class="lm_active_state" style="display:none">';
+			$content .= self::get_navi_control_icon( 'fas fa-spinner' );
+			$content .= ' ' . __( 'Loading', 'twae' ) . '</span><span class="lm_default_state">' . __( esc_html( $post_settings['ajax_button'] ), 'twae' ) . '</span></button></div>';
 		} else {
 			if ( $total_pages > 1 ) {
 				$current_page = max( 1, get_query_var( 'paged' ) );
@@ -373,7 +370,6 @@ class Twae_Functions {
 		return $content;
 	}
 
-
 	/**
 	 * Retrieve and return the content for an icon placeholder.
 	 *
@@ -383,12 +379,12 @@ class Twae_Functions {
 	 * @return string The content for the icon placeholder
 	 */
 	public static function twae_get_icon_placeholder_content( $content ) {
-		$twae_icon_type = isset( $content['twae_icon_type'] ) ? $content['twae_icon_type'] : 'icon';
+		$twae_icon_type = isset( $content['twae_icon_type'] ) ? sanitize_text_field( $content['twae_icon_type'] ) : 'icon';
 		if ( 'image' === $twae_icon_type ) {
-			$icon_image = wp_get_attachment_image( $content['twae_icon_image']['id'], array( 40, 40 ), true );
+			$icon_image = wp_get_attachment_image( intval( $content['twae_icon_image']['id'] ), array( 40, 40 ), true );
 			return $icon_image;
 		} elseif ( 'customtext' === $twae_icon_type ) {
-			$twae_icon_text = isset( $content['twae_icon_text'] ) ? $content['twae_icon_text'] : '';
+			$twae_icon_text = isset( $content['twae_icon_text'] ) ? sanitize_text_field( $content['twae_icon_text'] ) : '';
 			return '<span class="twae_icon_text">' . esc_html( $twae_icon_text ) . '</span>';
 		} else {
 			if ( isset( $content['twae_story_icon'] ) ) {
@@ -438,13 +434,13 @@ class Twae_Functions {
 			}
 
 			if ( ! empty( $content['twae_image']['id'] ) ) {
-				$lightbox_open .= 'yes' === $image_lightbox ? '<a class="wplightbox" href="' . esc_url( wp_get_attachment_url( $content['twae_image']['id'], 'full' ) ) . '">' : '';
+				$lightbox_open .= 'yes' === $image_lightbox ? '<a class="wplightbox" href="' . esc_url( wp_get_attachment_url( intval( $content['twae_image']['id'] ), 'full' ) ) . '">' : '';
 
 				if ( isset( $content['thumbnail_size'] ) && 'custom' === $story_settings['thumbnail_size'] ) {
-					$custom_size = array( $story_settings['thumbnail_custom_dimension']['width'], $story_settings['thumbnail_custom_dimension']['height'] );
-					$image       = wp_get_attachment_image( $content['twae_image']['id'], $custom_size, true );
+					$custom_size = array( intval( $story_settings['thumbnail_custom_dimension']['width'] ), intval( $story_settings['thumbnail_custom_dimension']['height'] ) );
+					$image       = wp_get_attachment_image( intval( $content['twae_image']['id'] ), $custom_size, true );
 				} else {
-					$image = wp_get_attachment_image( $content['twae_image']['id'], $story_settings['thumbnail_size'], true );
+					$image = wp_get_attachment_image( intval( $content['twae_image']['id'] ), $story_settings['thumbnail_size'], true );
 				}
 				$media = '<div class="twae-media ' . esc_attr( $story_settings['thumbnail_size'] ) . esc_attr( $image_effect ) . '">' . $lightbox_open . $image . $lightbox_close . '</div>';
 			} elseif ( ! empty( $content['twae_image']['url'] ) ) {
@@ -481,17 +477,18 @@ class Twae_Functions {
 			}
 		} else {
 			if ( null !== $story_settings['slideshow'] && is_array( $story_settings['slideshow'] ) && count( $story_settings['slideshow'] ) ) {
-				$twae_slideshow_autoplay = ! empty( $content['twae_slideshow_autoplay'] ) ? $content['twae_slideshow_autoplay'] : 'false';
+				$twae_slideshow_autoplay = ! empty( $content['twae_slideshow_autoplay'] ) ? sanitize_text_field( $content['twae_slideshow_autoplay'] ) : 'false';
 
 				$media .= '<div class="twae-media' . esc_attr( $image_effect ) . '"><div  id="twae-slideshow-' . esc_attr( $content['_id'] ) . esc_attr( $random_number ) . '" class="twae-slideshow swiper-container" dir="' . esc_attr( $dir ) . '" data-slideshow_autoplay ="' . esc_attr( $twae_slideshow_autoplay ) . '"><div class="swiper-wrapper">';
 				foreach ( $story_settings['slideshow'] as $image ) {
+					$lightbox_open = '';
 
 					if ( 'yes' === $image_lightbox ) {
-						$lightbox       = wp_get_attachment_image_url( $image['id'], 'full' );
+						$lightbox       = wp_get_attachment_image_url( intval( $image['id'] ), 'full' );
 						$lightbox_open .= '<a class="twae-slideshow-lightbox" data-elementor-lightbox-slideshow="twae_img_lightbox' . esc_attr( $content['_id'] ) . '" href="' . esc_url( $lightbox ) . '">';
 					};
 
-					$image  = wp_get_attachment_image( $image['id'], 'large', false );
+					$image  = wp_get_attachment_image( intval( $image['id'] ), 'large', false );
 					$media .= '<div class="swiper-slide">' . $lightbox_open . $image . $lightbox_close . '</div>';
 				}
 				$media .= '</div>
@@ -516,7 +513,7 @@ class Twae_Functions {
 	 */
 	public static function twae_story_content_variables( $content ) {
 
-		$thumbnail_size = isset( $content['twae_thumbnail_size'] ) ? esc_html( $content['twae_thumbnail_size'] ) : 'large';
+		$thumbnail_size = isset( $content['twae_thumbnail_size'] ) ? sanitize_text_field( $content['twae_thumbnail_size'] ) : 'large';
 		if ( 'medium_large' === $thumbnail_size || 'large' === $thumbnail_size ) {
 			$image_width = 'full';
 		} else {
@@ -530,18 +527,18 @@ class Twae_Functions {
 			'story_sub_label'            => isset( $content['twae_extra_label'] ) ? esc_html( $content['twae_extra_label'] ) : '',
 			'timeline_story_title'       => isset( $content['twae_story_title'] ) ? esc_html( $content['twae_story_title'] ) : '',
 			'story_icon'                 => isset( $content['twae_story_icon'] ) ? $content['twae_story_icon']['value'] : '',
-			'thumbnail_size'             => isset( $content['twae_thumbnail_size'] ) ? esc_html( $content['twae_thumbnail_size'] ) : '',
+			'thumbnail_size'             => isset( $content['twae_thumbnail_size'] ) ? sanitize_text_field( $content['twae_thumbnail_size'] ) : '',
 			'thumbnail_custom_dimension' => isset( $content['twae_thumbnail_custom_dimension'] ) ? $content['twae_thumbnail_custom_dimension'] : '',
-			'video_url'                  => isset( $content['twae_video_url'] ) ? esc_html( $content['twae_video_url'] ) : '',
+			'video_url'                  => isset( $content['twae_video_url'] ) ? esc_url( $content['twae_video_url'] ) : '',
 			'slideshow'                  => isset( $content['twae_slideshow'] ) ? $content['twae_slideshow'] : '',
 			'display_icon'               => isset( $content['twae_display_icon'] ) ? esc_html( $content['twae_display_icon'] ) : null,
-			'icon_type'                  => isset( $content['twae_icon_type'] ) ? esc_html( $content['twae_icon_type'] ) : '',
+			'icon_type'                  => isset( $content['twae_icon_type'] ) ? sanitize_text_field( $content['twae_icon_type'] ) : '',
 			'image_width'                => $image_width,
 			'story_link'                 => isset( $content['twae_story_link']['url'] ) ? esc_url( $content['twae_story_link']['url'] ) : '',
 			'story_link_target'          => isset( $content['twae_story_link']['is_external'] ) && ! empty( $content['twae_story_link']['is_external'] ) ? ' target="_blank"' : '',
 			'story_link_nofollow'        => isset( $content['twae_story_link']['nofollow'] ) && ! empty( $content['twae_story_link']['nofollow'] ) ? ' rel="nofollow"' : '',
 			'enable_link'                => isset( $content['twae_title_link'] ) && ! empty( $content['twae_title_link'] ) ? $content['twae_title_link'] : 'no',
-			'button_txt'                 => isset( $content['twae_button_txt'] ) ? $content['twae_button_txt'] : __( 'Read more', 'twea' ),
+			'button_txt'                 => isset( $content['twae_button_txt'] ) ? sanitize_text_field( $content['twae_button_txt'] ) : __( 'Read more', 'twea' ),
 		);
 
 		return $story_settings;
@@ -549,21 +546,36 @@ class Twae_Functions {
 	}
 
 	/**
-	 * Retrieves and returns the HTML for a navigation control icon.
+	 * Generate slider arrow navigation HTML dynamically.
 	 *
-	 * @param string $icon The icon class.
-	 * @return string The HTML for the navigation control icon.
+	 * @param string $icon_name The name of the icon.
+	 * @param string $position The position of the arrow.
+	 * @return string The HTML for the arrow navigation.
 	 */
-	public static function get_navi_control_icon( $icon ) {
-		if ( false !== strpos( $icon, 'fa-' ) ) {
-			return wp_kses(
-				'<i class="' . esc_attr( $icon ) . '"></i>',
-				array(
-					'i' => array(
-						'class' => array(),
-					),
-				)
+	public static function get_navi_control_icon( $icon_name, $position = 'left' ) {
+		if ( false !== strpos( $icon_name, 'fa-' ) ) {
+
+			$icon_type = strpos( $icon_name, 'far' ) === 0 || strpos( $icon_name, 'far' ) !== false ? 'fa-regular' : 'fa-solid';
+
+			$svg_library = get_option( 'elementor_experiment-e_font_icon_svg', 'default' );
+
+			// Enqueue nav arrow font awesome style if style not enqueued
+			if ( ! wp_style_is( 'elementor-icons-' . $icon_type, 'enqueued' ) && wp_style_is( 'elementor-icons-' . $icon_type, 'registered' ) && 'inactive' === $svg_library ) {
+				wp_enqueue_style( 'elementor-icons-' . $icon_type, 'enqueued' );
+			}
+
+			if ( 'right' === $position ) {
+				$icon_name = str_replace( 'left', 'right', $icon_name );
+			}
+
+			$icon_data = array(
+				'value'   => $icon_name,
+				'library' => $icon_type,
 			);
+
+			$icon = self::twae_render_icon_html( $icon_data );
+
+			return $icon;
 		} else {
 			return '';
 		}

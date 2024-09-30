@@ -23,7 +23,15 @@ if ( class_exists( 'WPML_Elementor_Module_With_Items' ) && ! class_exists( 'TWAE
 		 * @return array
 		 */
 		public function get_fields() {
-			return array( 'twae_story_title', 'twae_description', 'twae_year', 'twae_date_label', 'twae_extra_label', 'twae_icon_text', 'twae_button_txt' );
+			return array( 
+				'twae_story_title', 
+				'twae_description', 
+				'twae_year', 
+				'twae_date_label', 
+				'twae_extra_label', 
+				'twae_icon_text', 
+				'twae_button_txt' 
+			);
 		}
 
 		/**
@@ -32,6 +40,7 @@ if ( class_exists( 'WPML_Elementor_Module_With_Items' ) && ! class_exists( 'TWAE
 		 * @return string
 		 */
 		protected function get_title( $field ) {
+			$field = sanitize_key( $field ); // Sanitize the field input
 			switch ( $field ) {
 				case 'twae_story_title':
 					return esc_html__( 'Timeline: Title', 'twae' );
@@ -65,6 +74,7 @@ if ( class_exists( 'WPML_Elementor_Module_With_Items' ) && ! class_exists( 'TWAE
 		 * @return string
 		 */
 		protected function get_editor_type( $field ) {
+			$field = sanitize_key( $field ); // Sanitize the field input
 			switch ( $field ) {
 				case 'twae_story_title':
 					return 'LINE';

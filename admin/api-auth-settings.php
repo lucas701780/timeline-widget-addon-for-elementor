@@ -276,7 +276,7 @@ class TWAE_Settings {
 		unset( $settings[ $this->PREFIX . '-purchase-code' ] );
 		update_option( $this->PREFIX . '_license_registration', '' );
 		delete_transient( $this->PREFIX . '_api_data_verification' );
-		die(json_encode(array('Response' => '200', 'Message' => 'License Successfully Uninstalled.')));
+		die(json_encode(array('Response' => '200', 'Message' => 'License Successfully Uninstalled.')));		
 		$message = '';
 		if ( wp_verify_nonce( $_REQUEST['_password'], 'purchase-verify' ) == true ) {
 			$response = TimelineProAddonForElementorBase::RemoveLicenseKey( $this->Base_File, $message );

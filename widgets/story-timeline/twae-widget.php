@@ -39,45 +39,49 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 			$css_ext = '.min.css';
 			$js_ext  = '.min.js';
 		}
+
+		$js_common_dep = array( 'elementor-frontend' );
+
+		if ( !\Elementor\Plugin::$instance->preview->is_preview_mode() && is_user_logged_in()) {
+			$js_common_dep = array( 'elementor-common', 'elementor-frontend' );
+		}
+
 		// Common styles.
-		wp_register_style( 'twae-common-css', TWAE_PRO_URL . 'assets/css/twae-common-styles' . $css_ext, array(), TWAE_PRO_VERSION, 'all' );
+		wp_register_style( 'twae-common-css', esc_url( TWAE_PRO_URL . 'assets/css/twae-common-styles' . $css_ext ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
 
 		// Vertical Timeline.
-		wp_register_style( 'twae-vertical-css', TWAE_PRO_URL . 'assets/css/twae-vertical-timeline' . $css_ext, array(), TWAE_PRO_VERSION, 'all' );
-		wp_register_script( 'twae-vertical-timeline-js', TWAE_PRO_URL . 'assets/js/twae-vertical-timeline' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true ); // for AOS animation
+		wp_register_style( 'twae-vertical-css', esc_url( TWAE_PRO_URL . 'assets/css/twae-vertical-timeline' . $css_ext ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_script( 'twae-vertical-timeline-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-vertical-timeline' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true ); // for AOS animation
 
 		// Compact Layout & Images loaded..
-		wp_register_script( 'twae-masonry-js', TWAE_PRO_URL . 'assets/js/twae-masonry.min.js', array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
-		wp_register_script( 'twae-images-loaded-js', TWAE_PRO_URL . 'assets/js/twae-imagesloaded.min.js', array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
-		wp_register_script( 'twae-vertical-compact-js', TWAE_PRO_URL . 'assets/js/twae-vertical-timeline-compact' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
-		wp_register_style( 'twae-vertical-compact', TWAE_PRO_URL . 'assets/css/twae-vertical-compact' . $css_ext, array(), TWAE_PRO_VERSION, 'all' );
+		wp_register_script( 'twae-masonry-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-masonry.min.js' ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
+		wp_register_script( 'twae-images-loaded-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-imagesloaded.min.js' ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
+		wp_register_script( 'twae-vertical-compact-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-vertical-timeline-compact' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
+		wp_register_style( 'twae-vertical-compact', esc_url( TWAE_PRO_URL . 'assets/css/twae-vertical-compact' . $css_ext ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
 
 		// Horizontal Timeline.
-		wp_register_style( 'twae-horizontal-css', TWAE_PRO_URL . 'assets/css/twae-horizontal-timeline' . $css_ext, array(), TWAE_PRO_VERSION, 'all' );
-		wp_register_script( 'twae-horizontal-js', TWAE_PRO_URL . 'assets/js/twae-horizontal-timeline' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
+		wp_register_style( 'twae-horizontal-css', esc_url( TWAE_PRO_URL . 'assets/css/twae-horizontal-timeline' . $css_ext ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_script( 'twae-horizontal-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-horizontal-timeline' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
 
 		// popup.
-		wp_register_script( 'twae-popup-js', TWAE_PRO_URL . 'assets/js/twae-popup' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
+		wp_register_script( 'twae-popup-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-popup' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
 
 		// AOS animation.
-		wp_register_script( 'twae-aos-js', TWAE_PRO_URL . 'assets/js/twae-aos.min.js', array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
-		wp_register_style( 'twae-aos-css', TWAE_PRO_URL . 'assets/css/twae-aos.min.css', array(), TWAE_PRO_VERSION, 'all' );
+		wp_register_script( 'twae-aos-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-aos.min.js' ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
+		wp_register_style( 'twae-aos-css', esc_url( TWAE_PRO_URL . 'assets/css/twae-aos.min.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
 
 		// Images slideshow for both vertical and horizontal timeline.
-		wp_register_script( 'twae-slideshow-js', TWAE_PRO_URL . 'assets/js/twae-slideshow' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
+		wp_register_script( 'twae-slideshow-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-slideshow' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
 
 		// Fontello CSS for both vertical and horizontal timeline.
-		wp_register_style( 'twae-fontello-css', TWAE_PRO_URL . 'assets/css/twae-fontello.css', array(), TWAE_PRO_VERSION, 'all' );
+		wp_register_style( 'twae-fontello-css', esc_url( TWAE_PRO_URL . 'assets/css/twae-fontello.css' ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
 
 		// Images loaded.
-		wp_register_script( 'twae-images-loaded-js', TWAE_PRO_URL . 'assets/js/twae-imagesloaded.min.js', array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
+		wp_register_script( 'twae-images-loaded-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-imagesloaded.min.js' ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
 
 		// Year Navigation bar.
-		wp_register_style( 'twae-year-navigation', TWAE_PRO_URL . 'assets/css/twae-navigation' . $css_ext, array(), TWAE_PRO_VERSION, 'all' );
-		wp_register_script( 'twae-year-navigation-js', TWAE_PRO_URL . 'assets/js/twae-year-navigation' . $js_ext, array( 'elementor-frontend' ), TWAE_PRO_VERSION, true );
-
-		// Font Awesome.
-		wp_register_style( 'font-awesome-5-all', ELEMENTOR_ASSETS_URL . 'lib/font-awesome/css/all.min.css', array(), TWAE_PRO_VERSION, 'all' );// load elementor fontawesome
+		wp_register_style( 'twae-year-navigation', esc_url( TWAE_PRO_URL . 'assets/css/twae-navigation' . $css_ext ), array(), esc_attr( TWAE_PRO_VERSION ), 'all' );
+		wp_register_script( 'twae-year-navigation-js', esc_url( TWAE_PRO_URL . 'assets/js/twae-year-navigation' . $js_ext ), $js_common_dep, esc_attr( TWAE_PRO_VERSION ), true );
 
 	}
 
@@ -91,42 +95,39 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 * @return array Element scripts dependencies.
 	 */
 	public function get_script_depends() {
-
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
-			return array( 'twae-horizontal-js', 'twae-aos-js', 'twae-vertical-timeline-js', 'twae-slideshow-js', 'twae-popup-js', 'twae-images-loaded-js', 'twae-year-navigation-js', 'twae-masonry-js', 'twae-vertical-compact-js' );
-		}
-		$settings = $this->get_settings_for_display();
-
-		$layout         = $settings['twae_layout'];
-		$animation      = isset( $settings['twae_animation'] ) ? $settings['twae_animation'] : 'none';
-		$navigation_bar = isset( $settings['twae_navigation_bar'] ) ? $settings['twae_navigation_bar'] : 'no';
-
 		$script = array( 'twae-images-loaded-js' );
-		if ( $layout == 'horizontal' || $layout == 'horizontal-bottom' ) {
-			array_push( $script, 'twae-horizontal-js', 'twae-slideshow-js' );
-		} elseif ( $layout == 'horizontal-highlighted' ) {
-			array_push( $script, 'twae-horizontal-js', 'twae-slideshow-js' );
-		} elseif ( $layout == 'compact' ) {
-			array_push( $script, 'twae-masonry-js', 'twae-images-loaded-js', 'twae-vertical-compact-js', 'twae-slideshow-js' );
 
+		// Check if in edit mode or preview mode
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
+			return array_merge( $script, array( 'twae-horizontal-js', 'twae-aos-js', 'twae-vertical-timeline-js', 'twae-slideshow-js', 'twae-popup-js', 'twae-year-navigation-js', 'twae-masonry-js', 'twae-vertical-compact-js' ) );
+		}
+
+		$settings = $this->get_settings_for_display();
+		$layout = isset( $settings['twae_layout'] ) ? sanitize_text_field( $settings['twae_layout'] ) : '';
+		$animation = isset( $settings['twae_animation'] ) ? sanitize_text_field( $settings['twae_animation'] ) : 'none';
+		$navigation_bar = isset( $settings['twae_navigation_bar'] ) ? sanitize_text_field( $settings['twae_navigation_bar'] ) : 'no';
+
+		if ( in_array( $layout, array( 'horizontal', 'horizontal-bottom', 'horizontal-highlighted' ), true ) ) {
+			$script = array_merge( $script, array( 'twae-horizontal-js', 'twae-slideshow-js' ) );
+		} elseif ( $layout === 'compact' ) {
+			$script = array_merge( $script, array( 'twae-masonry-js', 'twae-vertical-compact-js', 'twae-slideshow-js' ) );
 		} else {
-			if ( $animation != 'none' ) {
-				array_push( $script, 'twae-aos-js' );
+			if ( $animation !== 'none' ) {
+				$script[] = 'twae-aos-js';
 			}
-
-			if ( $navigation_bar == 'yes' ) {
-				array_push( $script, 'twae-year-navigation-js' );
+			if ( $navigation_bar === 'yes' ) {
+				$script[] = 'twae-year-navigation-js';
 			}
+			$script = array_merge( $script, array( 'twae-vertical-timeline-js', 'twae-slideshow-js' ) );
+		}
 
-			array_push( $script, 'twae-vertical-timeline-js', 'twae-slideshow-js' );
+		if ( isset( $settings['twae_vertical_style'] ) && $settings['twae_vertical_style'] === 'style-4' ||
+		     isset( $settings['twae_hr_style'] ) && $settings['twae_hr_style'] === 'style-4' ||
+		     isset( $settings['twae_content_in_popup'] ) && $settings['twae_content_in_popup'] === 'yes' ) {
+			$script[] = 'twae-popup-js';
 		}
-		if ( $settings['twae_vertical_style'] == 'style-4'
-		|| $settings['twae_hr_style'] == 'style-4'
-		|| $settings['twae_content_in_popup'] == 'yes'
-		) {
-			array_push( $script, 'twae-popup-js' );
-		}
-		return $script;
+
+		return array_unique( $script );
 	}
 
 	/**
@@ -139,33 +140,34 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 * @return array Element styles dependencies.
 	 */
 	public function get_style_depends() {
+		$styles = array( 'twae-common-css', 'twae-fontello-css' );
 
+		// Check if in edit mode or preview mode
 		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
-			return array( 'twae-common-css', 'twae-vertical-css', 'twae-horizontal-css', 'twae-fontello-css', 'twae-aos-css', 'twae-year-navigation', 'font-awesome-5-all', 'twae-vertical-compact' );
+			return array_merge( $styles, array( 'twae-vertical-css', 'twae-horizontal-css', 'twae-aos-css', 'twae-year-navigation', 'twae-vertical-compact' ) );
 		}
-		$settings       = $this->get_settings_for_display();
-		$layout         = $settings['twae_layout'];
-		$animation      = $settings['twae_animation'];
-		$navigation_bar = isset( $settings['twae_navigation_bar'] ) ? $settings['twae_navigation_bar'] : 'no';
 
-		$styles = array( 'twae-common-css', 'twae-fontello-css', 'font-awesome-5-all' );
+		$settings = $this->get_settings_for_display();
+		$layout = isset( $settings['twae_layout'] ) ? sanitize_text_field( $settings['twae_layout'] ) : '';
+		$animation = isset( $settings['twae_animation'] ) ? sanitize_text_field( $settings['twae_animation'] ) : 'none';
+		$navigation_bar = isset( $settings['twae_navigation_bar'] ) ? sanitize_text_field( $settings['twae_navigation_bar'] ) : 'no';
 
-		if ( $layout == 'horizontal' || $layout == 'horizontal-bottom' || $layout == 'horizontal-highlighted' ) {
-			array_push( $styles, 'twae-horizontal-css' );
-		} elseif ( $layout == 'compact' ) {
-			array_push( $styles, 'twae-vertical-css' );
-			array_push( $styles, 'twae-vertical-compact' );
+		if ( in_array( $layout, array( 'horizontal', 'horizontal-bottom', 'horizontal-highlighted' ), true ) ) {
+			$styles[] = 'twae-horizontal-css';
+		} elseif ( $layout === 'compact' ) {
+			$styles[] = 'twae-vertical-css';
+			$styles[] = 'twae-vertical-compact';
 		} else {
-			if ( $animation != 'none' ) {
-				array_push( $styles, 'twae-aos-css' );
+			if ( $animation !== 'none' ) {
+				$styles[] = 'twae-aos-css';
 			}
-			if ( $navigation_bar == 'yes' ) {
-					array_push( $styles, 'twae-year-navigation' );
+			if ( $navigation_bar === 'yes' ) {
+				$styles[] = 'twae-year-navigation';
 			}
-
-			array_push( $styles, 'twae-vertical-css' );
+			$styles[] = 'twae-vertical-css';
 		}
-		return $styles;
+
+		return array_unique( $styles );
 	}
 
 	/**
@@ -183,7 +185,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 * @return string The title of the widget.
 	 */
 	public function get_title() {
-		return __( 'Story Timeline', 'twae' );
+		return esc_html__( 'Story Timeline', 'twae' );
 	}
 
 	/**
@@ -192,7 +194,6 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 * @return string The icon of the widget.
 	 */
 	public function get_icon() {
-		// return 'eicon-time-line';
 		return 'eicon-twae-timeline-story';
 	}
 
@@ -615,7 +616,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::ICONS,
 				'default'   => array(
 					'value'   => 'far fa-clock',
-					'library' => 'solid',
+					'library' => 'fa-regular',
 				),
 				'condition' => array(
 					'twae_display_icons' => 'displayicons',
@@ -711,7 +712,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 			)
 		);
 		// Vertical Animations
-		$animations = Twae_Functions::twae_pro_amination_array();
+		$animations = Twae_Functions::twae_pro_animation_array();
 		$this->add_control(
 			'twae_animation',
 			array(
@@ -863,9 +864,9 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 */
 	public function twae_update_migration_status( $post_id, $editor_data ) {
 
-		if ( get_option( 'twae-v' ) != false ) {
-			if ( get_post_meta( $post_id, 'twae_exists', true ) ) {
-				update_post_meta( $post_id, 'twae_style_migration', 'done' );
+		if ( get_option( 'twae-v' ) !== false ) {
+			if ( get_post_meta( intval( $post_id ), 'twae_exists', true ) ) {
+				update_post_meta( intval( $post_id ), 'twae_style_migration', 'done' );
 				update_option( 'twae-migration-status', 'done' );
 				return;
 			}
@@ -883,43 +884,43 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 * @return string|bool The custom styles or false if there are no custom styles.
 	 */
 	public function specific_story_style( $post_id, $settings, $story_key, $timeline_style ) {
-		$widgetID      = '.elementor-' . $post_id . ' .elementor-element.elementor-element-' . $this->get_id();
-		$selector      = $widgetID . ' .twae-wrapper' . ' .' . $story_key;
+		$widgetID      = '.elementor-' . esc_attr( $post_id ) . ' .elementor-element.elementor-element-' . esc_attr( $this->get_id() );
+		$selector      = $widgetID . ' .twae-wrapper' . ' .' . esc_attr( $story_key );
 		$custom_styles = '';
-		if ( isset( $settings['twae_custom_story_title_color'] ) && $settings['twae_custom_story_title_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-title-color:' . $settings['twae_custom_story_title_color'] . '}';
-			$custom_styles .= $selector . '{--tw-ibx-bg:' . $settings['twae_custom_story_title_color'] . '}';
-			$custom_styles .= $selector . '{--tw-arw-bd-color:' . $settings['twae_custom_story_title_color'] . '}';
-			$custom_styles .= $selector . '{--tw-cbx-bd-color:' . $settings['twae_custom_story_title_color'] . '}';
+		if ( isset( $settings['twae_custom_story_title_color'] ) && ! empty( $settings['twae_custom_story_title_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-title-color:' . esc_attr( $settings['twae_custom_story_title_color'] ) . '}';
+			$custom_styles .= $selector . '{--tw-ibx-bg:' . esc_attr( $settings['twae_custom_story_title_color'] ) . '}';
+			$custom_styles .= $selector . '{--tw-arw-bd-color:' . esc_attr( $settings['twae_custom_story_title_color'] ) . '}';
+			$custom_styles .= $selector . '{--tw-cbx-bd-color:' . esc_attr( $settings['twae_custom_story_title_color'] ) . '}';
 		}
 
-		if ( isset( $settings['twae_custom_title_icon_bgc'] ) && $settings['twae_custom_title_icon_bgc'] != '' && $timeline_style == 'style-2' ) {
-			$custom_styles .= $selector . '{--tw-cbx-title-bg:' . $settings['twae_custom_title_icon_bgc'] . '}';
+		if ( isset( $settings['twae_custom_title_icon_bgc'] ) && ! empty( $settings['twae_custom_title_icon_bgc'] ) && $timeline_style == 'style-2' ) {
+			$custom_styles .= $selector . '{--tw-cbx-title-bg:' . esc_attr( $settings['twae_custom_title_icon_bgc'] ) . '}';
 
-			$custom_styles .= $selector . ' .twae-icon{background-color:' . $settings['twae_custom_title_icon_bgc'] . ' !Important}';
+			$custom_styles .= $selector . ' .twae-icon{background-color:' . esc_attr( $settings['twae_custom_title_icon_bgc'] ) . ' !important}';
 
-			$custom_styles .= $selector . ' .twae-icondot{background-color:' . $settings['twae_custom_title_icon_bgc'] . ' !Important}';
-			$custom_styles .= $selector . ' .twae-icon{--tw-ibx-color:' . $settings['twae_custom_story_title_color'] . '}';
-			$custom_styles .= $selector . '{--tw-arw-line-background:' . $settings['twae_custom_title_icon_bgc'] . '}';
+			$custom_styles .= $selector . ' .twae-icondot{background-color:' . esc_attr( $settings['twae_custom_title_icon_bgc'] ) . ' !important}';
+			$custom_styles .= $selector . ' .twae-icon{--tw-ibx-color:' . esc_attr( $settings['twae_custom_story_title_color'] ) . '}';
+			$custom_styles .= $selector . '{--tw-arw-line-background:' . esc_attr( $settings['twae_custom_title_icon_bgc'] ) . '}';
 		}
 
-		if ( isset( $settings['twae_custom_label_color'] ) && $settings['twae_custom_label_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-lbl-big-color:' . $settings['twae_custom_label_color'] . ';}';
-			$custom_styles .= $selector . '{--tw-lbl-small-color:' . $settings['twae_custom_label_color'] . ';}';
+		if ( isset( $settings['twae_custom_label_color'] ) && ! empty( $settings['twae_custom_label_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-lbl-big-color:' . esc_attr( $settings['twae_custom_label_color'] ) . ';}';
+			$custom_styles .= $selector . '{--tw-lbl-small-color:' . esc_attr( $settings['twae_custom_label_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_custom_sublabel_color'] ) && $settings['twae_custom_sublabel_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-lbl-small-color:' . $settings['twae_custom_sublabel_color'] . ';}';
+		if ( isset( $settings['twae_custom_sublabel_color'] ) && ! empty( $settings['twae_custom_sublabel_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-lbl-small-color:' . esc_attr( $settings['twae_custom_sublabel_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_custom_description_color'] ) && $settings['twae_custom_description_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-des-color:' . $settings['twae_custom_description_color'] . ';}';
+		if ( isset( $settings['twae_custom_description_color'] ) && ! empty( $settings['twae_custom_description_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-des-color:' . esc_attr( $settings['twae_custom_description_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_custom_year_label_bgcolor'] ) && $settings['twae_custom_year_label_bgcolor'] != '' ) {
-			$custom_styles .= $selector . '{--tw-ybx-bg:' . $settings['twae_custom_year_label_bgcolor'] . '}';
+		if ( isset( $settings['twae_custom_year_label_bgcolor'] ) && ! empty( $settings['twae_custom_year_label_bgcolor'] ) ) {
+			$custom_styles .= $selector . '{--tw-ybx-bg:' . esc_attr( $settings['twae_custom_year_label_bgcolor'] ) . '}';
 		}
-		if ( isset( $settings['twae_custom_story_bgcolor'] ) && $settings['twae_custom_story_bgcolor'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-bg:' . $settings['twae_custom_story_bgcolor'] . '}';
-			$custom_styles .= $selector . '{--tw-arw-bg:' . $settings['twae_custom_story_bgcolor'] . '}';
-			$custom_styles .= $selector . '{--tw-ibx-color:' . $settings['twae_custom_story_bgcolor'] . '}';
+		if ( isset( $settings['twae_custom_story_bgcolor'] ) && ! empty( $settings['twae_custom_story_bgcolor'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-bg:' . esc_attr( $settings['twae_custom_story_bgcolor'] ) . '}';
+			$custom_styles .= $selector . '{--tw-arw-bg:' . esc_attr( $settings['twae_custom_story_bgcolor'] ) . '}';
+			$custom_styles .= $selector . '{--tw-ibx-color:' . esc_attr( $settings['twae_custom_story_bgcolor'] ) . '}';
 		}
 
 		if ( ! empty( $custom_styles ) ) {
@@ -940,49 +941,49 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 */
 	public function older_v_compatibility( $post_id, $settings, $timeline_style ) {
 			$custom_styles = '';
-			$widgetID      = '.elementor-' . $post_id . ' .elementor-element.elementor-element-' . $this->get_id();
+			$widgetID      = '.elementor-' . intval( $post_id ) . ' .elementor-element.elementor-element-' . $this->get_id();
 			$selector      = $widgetID . ' .twae-wrapper';
 			$typo_index    = '_typography';
 
 			$custom_styles .= $selector . '.twae-vertical .twae-story{margin-bottom:50px!important}';
 
-		if ( isset( $settings['twae_story_title_color'] ) && $settings['twae_story_title_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-title-color:' . $settings['twae_story_title_color'] . ';}';
+		if ( isset( $settings['twae_story_title_color'] ) && !empty( $settings['twae_story_title_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-title-color:' . esc_attr( $settings['twae_story_title_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_date_label_color'] ) && $settings['twae_date_label_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-lbl-big-color:' . $settings['twae_date_label_color'] . ';}';
+		if ( isset( $settings['twae_date_label_color'] ) && !empty( $settings['twae_date_label_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-lbl-big-color:' . esc_attr( $settings['twae_date_label_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_extra_label_color'] ) && $settings['twae_extra_label_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-lbl-small-color:' . $settings['twae_extra_label_color'] . ';}';
+		if ( isset( $settings['twae_extra_label_color'] ) && !empty( $settings['twae_extra_label_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-lbl-small-color:' . esc_attr( $settings['twae_extra_label_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_description_color'] ) && $settings['twae_description_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-des-color:' . $settings['twae_description_color'] . ';}';
+		if ( isset( $settings['twae_description_color'] ) && !empty( $settings['twae_description_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-des-color:' . esc_attr( $settings['twae_description_color'] ) . ';}';
 		}
-		if ( isset( $settings['twae_icon_bgcolor'] ) && $settings['twae_icon_bgcolor'] != '' ) {
-			$custom_styles .= $selector . '{--tw-ibx-bg:' . $settings['twae_icon_bgcolor'] . '}';
-			$custom_styles .= $selector . '{--tw-cbx-bd-color:' . $settings['twae_icon_bgcolor'] . ';--tw-arw-bd-color:' . $settings['twae_icon_bgcolor'] . ';}';
+		if ( isset( $settings['twae_icon_bgcolor'] ) && !empty( $settings['twae_icon_bgcolor'] ) ) {
+			$custom_styles .= $selector . '{--tw-ibx-bg:' . esc_attr( $settings['twae_icon_bgcolor'] ) . '}';
+			$custom_styles .= $selector . '{--tw-cbx-bd-color:' . esc_attr( $settings['twae_icon_bgcolor'] ) . ';--tw-arw-bd-color:' . esc_attr( $settings['twae_icon_bgcolor'] ) . ';}';
 		}
-		if ( isset( $settings['twae_year_label_color'] ) && $settings['twae_year_label_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-ybx-text-color:' . $settings['twae_year_label_color'] . '}';
+		if ( isset( $settings['twae_year_label_color'] ) && !empty( $settings['twae_year_label_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-ybx-text-color:' . esc_attr( $settings['twae_year_label_color'] ) . '}';
 		}
-		if ( isset( $settings['twae_year_label_bgcolor'] ) && $settings['twae_year_label_bgcolor'] != '' ) {
-			$custom_styles .= $selector . '{--tw-ybx-bg:' . $settings['twae_year_label_bgcolor'] . '}';
+		if ( isset( $settings['twae_year_label_bgcolor'] ) && !empty( $settings['twae_year_label_bgcolor'] ) ) {
+			$custom_styles .= $selector . '{--tw-ybx-bg:' . esc_attr( $settings['twae_year_label_bgcolor'] ) . '}';
 		}
-		if ( isset( $settings['twae_story_bgcolor'] ) && $settings['twae_story_bgcolor'] != '' ) {
-			$custom_styles .= $selector . '{--tw-cbx-bg:' . $settings['twae_story_bgcolor'] . '}';
+		if ( isset( $settings['twae_story_bgcolor'] ) && !empty( $settings['twae_story_bgcolor'] ) ) {
+			$custom_styles .= $selector . '{--tw-cbx-bg:' . esc_attr( $settings['twae_story_bgcolor'] ) . '}';
 		}
-		if ( isset( $settings['twae_line_color'] ) && $settings['twae_line_color'] != '' ) {
-			$custom_styles .= $selector . '{--tw-line-bg:' . $settings['twae_line_color'] . '}';
+		if ( isset( $settings['twae_line_color'] ) && !empty( $settings['twae_line_color'] ) ) {
+			$custom_styles .= $selector . '{--tw-line-bg:' . esc_attr( $settings['twae_line_color'] ) . '}';
 		}
-		if ( isset( $settings['twae_icon_size'] ) && $settings['twae_icon_size'] != '' ) {
-			$custom_styles .= $selector . '{--tw-ibx-text-size:' . $settings['twae_icon_size']['size'] . '' . $settings['twae_icon_size']['unit'] . '}';
+		if ( isset( $settings['twae_icon_size'] ) && !empty( $settings['twae_icon_size'] ) ) {
+			$custom_styles .= $selector . '{--tw-ibx-text-size:' . esc_attr( $settings['twae_icon_size']['size'] ) . esc_attr( $settings['twae_icon_size']['unit'] ) . '}';
 		}
 
 		if ( $timeline_style == 'style-2' ) {
-			if ( isset( $settings['twae_el_story_title_color'] ) && $settings['twae_el_story_title_color'] != '' ) {
-				$custom_styles .= $selector . '{--tw-cbx-title-color:' . $settings['twae_el_story_title_color'] . '}';
-				$custom_styles .= $selector . ' .twae-icon{--tw-ibx-color:' . $settings['twae_el_story_title_color'] . '}';
-				$custom_styles .= $selector . '{--tw-cbx-bd-color:' . $settings['twae_el_story_title_color'] . ';--tw-arw-bd-color:' . $settings['twae_el_story_title_color'] . ';}';
+			if ( isset( $settings['twae_el_story_title_color'] ) && !empty( $settings['twae_el_story_title_color'] ) ) {
+				$custom_styles .= $selector . '{--tw-cbx-title-color:' . esc_attr( $settings['twae_el_story_title_color'] ) . '}';
+				$custom_styles .= $selector . ' .twae-icon{--tw-ibx-color:' . esc_attr( $settings['twae_el_story_title_color'] ) . '}';
+				$custom_styles .= $selector . '{--tw-cbx-bd-color:' . esc_attr( $settings['twae_el_story_title_color'] ) . ';--tw-arw-bd-color:' . esc_attr( $settings['twae_el_story_title_color'] ) . ';}';
 			}
 		}
 		$custom_styles .= $selector . ' .twae-year-label{font-size:22px !Important;}';
@@ -1001,7 +1002,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 			$label_styles   = $this->get_typography_settings( $label_key, $settings );
 			$custom_styles .= $widgetID . ' .twae-label-big{' . $label_styles . '}';
 			if ( isset( $settings[ $label_key . '_font_size' ]['size'] ) ) {
-				$custom_styles .= $widgetID . ' .twae-wrapper{--tw-lbl-big-size:' . $settings[ $label_key . '_font_size' ]['size'] . '' . $settings[ $label_key . '_font_size' ]['unit'] . '}';
+				$custom_styles .= $widgetID . ' .twae-wrapper{--tw-lbl-big-size:' . esc_attr( $settings[ $label_key . '_font_size' ]['size'] ) . esc_attr( $settings[ $label_key . '_font_size' ]['unit'] ) . '}';
 			}
 		}
 		$sub_label_key = 'twae_extra_label_typography';
@@ -1011,7 +1012,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 			$custom_styles  .= $widgetID . ' .twae-label-small{' . $sublabel_styles . '}';
 
 			if ( isset( $settings[ $sub_label_key . '_font_size' ]['size'] ) ) {
-				$custom_styles .= $widgetID . ' .twae-wrapper{--tw-lbl-small-size:' . $settings[ $sub_label_key . '_font_size' ]['size'] . '' . $settings[ $sub_label_key . '_font_size' ]['unit'] . '}';
+				$custom_styles .= $widgetID . ' .twae-wrapper{--tw-lbl-small-size:' . esc_attr( $settings[ $sub_label_key . '_font_size' ]['size'] ) . esc_attr( $settings[ $sub_label_key . '_font_size' ]['unit'] ) . '}';
 			}
 		}
 		$desc_key = 'twae_description_typography';
@@ -1059,13 +1060,13 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 			$attribute = str_replace( '_', '-', $field );
 			if ( isset( $all_settings[ $index ] ) && $all_settings[ $index ] !== '' ) {
 				if ( is_array( $all_settings[ $index ] ) ) {
-					if ( $all_settings[ $index ]['size'] !== '' ) {
-						$unit       = $all_settings[ $index ]['unit'];
-						$size       = $all_settings[ $index ]['size'];
+					if ( isset( $all_settings[ $index ]['size'] ) && $all_settings[ $index ]['size'] !== '' ) {
+						$unit       = isset( $all_settings[ $index ]['unit'] ) ? esc_attr( $all_settings[ $index ]['unit'] ) : 'px';
+						$size       = esc_attr( $all_settings[ $index ]['size'] );
 						$field_css .= $attribute . ':' . $size . $unit . ';';
 					}
 				} else {
-					$field_css .= $attribute . ':' . $all_settings[ $index ] . ';';
+					$field_css .= $attribute . ':' . esc_attr( $all_settings[ $index ] ) . ';';
 				}
 			}
 		}
@@ -1077,76 +1078,69 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-		$data     = $settings['twae_list'];
-		$layout   = $settings['twae_layout'];
+		$data     = isset($settings['twae_list']) ? $settings['twae_list'] : [];
+		$layout   = isset($settings['twae_layout']) ? $settings['twae_layout'] : 'default';
 
-		$animation            = $settings['twae_animation'];
-		$enable_navigation    = isset( $settings['twae_navigation_bar'] ) ? $settings['twae_navigation_bar'] : 'no';
+		$animation            = isset($settings['twae_animation']) ? $settings['twae_animation'] : 'none';
+		$enable_navigation    = isset($settings['twae_navigation_bar']) ? $settings['twae_navigation_bar'] : 'no';
 		$compatibility_styles = '';
 		$story_styles         = '';
-		$timeline_style       = '';
+		$timeline_style       = 'style-1'; // Default value
 
-		if ( $layout == 'horizontal' || $layout == 'horizontal-bottom' || $layout == 'horizontal-highlighted' ) {
-			$timeline_style = isset( $settings['twae_hr_style'] ) ? $settings['twae_hr_style'] : 'style-1';
+		if ( in_array($layout, ['horizontal', 'horizontal-bottom', 'horizontal-highlighted']) ) {
+			$timeline_style = isset($settings['twae_hr_style']) ? sanitize_text_field($settings['twae_hr_style']) : $timeline_style;
 		} elseif ( $layout == 'compact' ) {
-			$timeline_style = isset( $settings['twae_vertical_style'] ) ? $settings['twae_vertical_style'] : 'style-1';
+			$timeline_style = isset($settings['twae_vertical_style']) ? sanitize_text_field($settings['twae_vertical_style']) : $timeline_style;
 			$animation      = 'none';
 		} else {
-			$timeline_style = isset( $settings['twae_vertical_style'] ) ? $settings['twae_vertical_style'] : 'style-1';
+			$timeline_style = isset($settings['twae_vertical_style']) ? sanitize_text_field($settings['twae_vertical_style']) : $timeline_style;
 		}
+
 		// run code only for old users
-		if ( get_option( 'twae-v' ) != false ) {
+		if ( get_option('twae-v') !== false ) {
 			global $post;
-			$post_id = $post->ID;
-			// delete_post_meta($post_id, 'twae_style_migration');
-			if ( ! get_post_meta( $post_id, 'twae_style_migration', true ) ) {
-				update_post_meta( $post_id, 'twae_exists', 'yes' );
-				$compatibility_styles .= $this->older_v_compatibility( $post_id, $settings, $timeline_style );
+			if ( isset($post->ID) ) {
+				$post_id = $post->ID;
+				if ( ! get_post_meta($post_id, 'twae_style_migration', true) ) {
+					update_post_meta($post_id, 'twae_exists', 'yes');
+					$compatibility_styles .= $this->older_v_compatibility($post_id, $settings, $timeline_style);
+				}
 			}
 		}
-		$isRTL = is_rtl();
 
-		$dir          = '';
-		$enable_popup = '';
-		if ( ( isset( $settings['twae_content_in_popup'] ) && $settings['twae_content_in_popup'] == 'yes' ) || $timeline_style == 'style-4' ) {
-			$enable_popup = 'yes';
-		} else {
-			$enable_popup = 'no';
-		}
-		if ( $isRTL ) {
-			$dir = 'rtl';
-		}
+		$isRTL = is_rtl();
+		$dir   = $isRTL ? 'rtl' : '';
+
+		$enable_popup = ( isset($settings['twae_content_in_popup']) && $settings['twae_content_in_popup'] == 'yes' ) || $timeline_style == 'style-4' ? 'yes' : 'no';
 
 		require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-story-loop.php';
 
-		if ( $layout == 'horizontal' ) {
-			$timeline_layout_wrapper = 'twae-horizontal-wrapper';
-			require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
-		}
-		// horizontal bottom condition
-		elseif ( $layout == 'horizontal-bottom' ) {
-			$timeline_layout_wrapper = 'twae-horizontal-bottom';
-			require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
-		} elseif ( $layout == 'horizontal-highlighted' ) {
-			$timeline_layout_wrapper = 'twae-horizontal-highlighted-timeline';
-			require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
-		} else {
+		switch ($layout) {
+			case 'horizontal':
+				$timeline_layout_wrapper = 'twae-horizontal-wrapper';
+				require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
+				break;
+			case 'horizontal-bottom':
+				$timeline_layout_wrapper = 'twae-horizontal-bottom';
+				require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
+				break;
+			case 'horizontal-highlighted':
+				$timeline_layout_wrapper = 'twae-horizontal-highlighted-timeline';
+				require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-horizontal-timeline.php';
+				break;
+			default:
 				$timeline_layout_wrapper = 'twae-both-sided';
-			if ( $layout == 'one-sided' ) {
-				$timeline_layout_wrapper = 'twae-vertical-right';
-			}
-
-			// add left vertical layout
-			if ( $layout == 'left-sided' ) {
-				$timeline_layout_wrapper = 'twae-vertical-left';
-			}
-			// require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/backup-vertical.php';
-			require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-vertical-timeline.php';
+				if ( $layout == 'one-sided' ) {
+					$timeline_layout_wrapper = 'twae-vertical-right';
+				} elseif ( $layout == 'left-sided' ) {
+					$timeline_layout_wrapper = 'twae-vertical-left';
+				}
+				require TWAE_PRO_PATH . 'widgets/story-timeline/frontend-layouts/twae-vertical-timeline.php';
 		}
 
 		$compatibility_styles .= $story_styles;
-		if ( ! empty( $compatibility_styles ) ) {
-			echo '<style type="text/css">' . $compatibility_styles . '</style>';
+		if ( ! empty($compatibility_styles) ) {
+			echo '<style type="text/css">' . wp_kses_post($compatibility_styles) . '</style>';
 		}
 	}
 
@@ -1352,7 +1346,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 				'type'        => \Elementor\Controls_Manager::MEDIA,
 				'description' => __( 'Image Size will not work with dummy image', 'twae' ),
 				'default'     => array(
-					'url' => \Elementor\Utils::get_placeholder_image_src(),
+					'url' => esc_url( \Elementor\Utils::get_placeholder_image_src() ),
 				),
 				'condition'   => array(
 					'twae_media' => array(
@@ -1485,7 +1479,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 				'label'     => __( 'Icon Image', 'twae' ),
 				'type'      => \Elementor\Controls_Manager::MEDIA,
 				'default'   => array(
-					'url' => \Elementor\Utils::get_placeholder_image_src(),
+					'url' => esc_url( \Elementor\Utils::get_placeholder_image_src() ),
 				),
 				'condition' => array(
 					'twae_icon_type' => 'image',
@@ -1731,7 +1725,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 						'twae_date_label'  => __( 'July 5', 'twae' ),
 						'twae_extra_label' => __( 'Introduced', 'twae' ),
 						'twae_image'       => array(
-							'url' => TWAE_PRO_URL . 'assets/images/amazon1.jpg',
+							'url' => esc_url( TWAE_PRO_URL . 'assets/images/amazon1.jpg' ),
 							'id'  => '',
 						),
 						'twae_video_url'   => '',
@@ -1743,7 +1737,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 						'twae_date_label'  => __( 'February 2', 'twae' ),
 						'twae_extra_label' => __( 'Expanded', 'twae' ),
 						'twae_image'       => array(
-							'url' => TWAE_PRO_URL . 'assets/images/amazon2.jpg',
+							'url' => esc_url( TWAE_PRO_URL . 'assets/images/amazon2.jpg' ),
 							'id'  => '',
 						),
 						'twae_video_url'   => '',
@@ -1755,7 +1749,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 						'twae_date_label'  => __( 'January 31', 'twae' ),
 						'twae_extra_label' => __( 'Expanded', 'twae' ),
 						'twae_image'       => array(
-							'url' => TWAE_PRO_URL . 'assets/images/amazon3.png',
+							'url' => esc_url( TWAE_PRO_URL . 'assets/images/amazon3.png' ),
 							'id'  => '',
 						),
 						'twae_video_url'   => '',
@@ -2765,7 +2759,7 @@ class TWAE_PRO_Widget extends \Elementor\Widget_Base {
 					'{{WRAPPER}} .twae-wrapper' => '--tw-cbx-bottom-margin: {{SIZE}}{{UNIT}}',
 				),
 				'condition'   => array(
-					'twae_layout!' => array( 'horizontal', 'horizontal-bottom', 'horizontal-highlighted' ),
+					'twae_layout!' => array( 'horizontal-bottom' ),
 				),
 			)
 		);

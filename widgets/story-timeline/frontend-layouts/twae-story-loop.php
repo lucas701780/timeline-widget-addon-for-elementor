@@ -83,7 +83,7 @@ if ( ! class_exists( 'Twae_Story_Loop' ) ) {
 			$this->repeater_key         = $repeater_key;
 			$this->render_repeater_attr = $render_repeater_attr;
 			$this->story_settings       = $story_settings;
-			$this->enable_popup         = $enable_popup;
+			$this->enable_popup         = sanitize_text_field($enable_popup);
 		}
 
 		/**
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Twae_Story_Loop' ) ) {
 			if ( ! empty( $story_settings['timeline_story_title'] ) ) {
 				$title_html .= '<' . esc_html( $this->title_tag ) . ' ' . $title_attr . '>';
 				if ( 'yes' === $story_settings['enable_link'] && ! empty( $story_settings['story_link'] ) && ! $popup ) {
-					$title_html .= '<a  href="' . esc_url( $story_settings['story_link'] ) . '" ' . $story_settings['story_link_target'] . ' ' . $story_settings['story_link_nofollow'] . '>';
+					$title_html .= '<a href="' . esc_url( $story_settings['story_link'] ) . '" ' . esc_attr($story_settings['story_link_target']) . ' ' . esc_attr($story_settings['story_link_nofollow']) . '>';
 				} elseif ( $popup && 'yes' === $this->enable_popup ) {
 					$title_html .= '<a href="#twae-popup-' . esc_attr( $this->story_data['_id'] ) . '" class="twae-popup-links">';
 				}
@@ -160,12 +160,8 @@ if ( ! class_exists( 'Twae_Story_Loop' ) ) {
 			} else {
 				$icon_cls   = 'twae-story-icon';
 				$icon_html .= '<div class="twae-icon">';
-					ob_start();
-					\Elementor\Icons_Manager::render_icon( $this->settings['twae_story_icons'], array( 'aria-hidden' => 'true' ) );
-					$render_icon = ob_get_contents();
-					ob_end_clean();
-					$icon_html .= $render_icon;
-				$icon_html     .= '</div>';
+				$icon_html .= Twae_Functions::twae_render_icon_html( $this->settings['twae_story_icons'] );
+				$icon_html .= '</div>';
 			}
 
 			$icon = array(
@@ -253,7 +249,7 @@ if ( ! class_exists( 'Twae_Story_Loop' ) ) {
 			$story_settings = $this->story_settings;
 			if ( 'yes' === $story_settings['enable_link'] && ! empty( $story_settings['story_link'] ) ) {
 				$button_txt   = $story_settings['button_txt'];
-				$button_html  = '<div class="twae-button"><a class="elementor-button" href="' . esc_url( $story_settings['story_link'] ) . '" ' . $story_settings['story_link_target'] . ' ' . $story_settings['story_link_nofollow'] . '>';
+				$button_html  = '<div class="twae-button"><a class="elementor-button" href="' . esc_url( $story_settings['story_link'] ) . '" ' . esc_attr($story_settings['story_link_target']) . ' ' . esc_attr($story_settings['story_link_nofollow']) . '>';
 				$button_html .= wp_kses_post( $button_txt ) . '</a></div>';
 			}
 			return $button_html;
@@ -352,5 +348,3 @@ if ( ! class_exists( 'Twae_Story_Loop' ) ) {
 		}
 	}
 }
-
-

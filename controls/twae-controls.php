@@ -1,17 +1,17 @@
 <?php
 /**
- * Elementor currency control.
+ * Elementor presets control.
  *
- * A control for displaying a select field with the ability to choose currencies.
+ * A control for displaying a select field with the ability to choose presets.
  *
  * @since 1.0.0
  */
 class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 
 	/**
-	 * Get currency control type.
+	 * Get presets control type.
 	 *
-	 * Retrieve the control type, in this case `currency`.
+	 * Retrieve the control type, in this case `preset`.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -20,6 +20,7 @@ class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 	public function get_type() {
 		return 'twae_preset_style';
 	}
+
 	/**
 	 * Get Default Settings.
 	 *
@@ -35,11 +36,12 @@ class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 			'options'     => array(),
 		);
 	}
+
 	public function enqueue() {
 		$src = TWAE_PRO_URL . 'admin/preset/preset.main.js';
 		wp_register_script(
 			'twae-preset-design',
-			$src,
+			esc_url( $src ),
 			array( 'jquery' ),
 			TWAE_PRO_VERSION,
 			false
@@ -50,16 +52,14 @@ class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 			'twae-preset-design',
 			'twae_preset',
 			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php' ) ),
 				'nonce'   => wp_create_nonce( 'twae_prset_nonce' ),
 			)
 		);
-
 	}
 
-
 	/**
-	 * Render currency control output in the editor.
+	 * Render presets control output in the editor.
 	 *
 	 * Used to generate the control HTML in the editor using Underscore JS
 	 * template. The variables for the class are available using `data` JS
@@ -77,7 +77,7 @@ class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 				<# var multiple = ( data.multiple ) ? 'multiple' : ''; #>
 				<select id="<?php echo esc_attr( $control_uid ); ?>" class="elementor-select2" type="select2" {{ multiple }} data-setting="{{ data.name }}">
 					<# _.each( data.options, function( option_title, option_value ) {
-						var value = data.controlValue ? data.default : data.controlValue;;
+						var value = data.controlValue ? data.default : data.controlValue;
 						if ( typeof value == 'string' ) {
 							var selected = ( option_value === value ) ? 'selected' : '';
 						} else if ( null !== value ) {
@@ -94,8 +94,5 @@ class Twae_Presets_Control extends \Elementor\Base_Data_Control {
 			<div class="elementor-control-field-description">{{{ data.description }}}</div>
 		<# } #>
 		<?php
-
 	}
-
-
 }

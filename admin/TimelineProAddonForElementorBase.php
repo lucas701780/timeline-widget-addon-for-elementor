@@ -597,21 +597,21 @@ if ( ! class_exists( 'TimelineProAddonForElementorBase' ) ) {
 				$error = '';
 				return false;
 			}
-			$responseObj = new \stdClass();
-			$responseObj->is_valid = true;
-			$responseObj->next_request = strtotime('+5 years');
-			$responseObj->expire_date = "12/12/2099";
-			$responseObj->support_end = "12/12/2099";
-			$responseObj->license_title = "GPL Special";
-			$responseObj->license_key = $purchase_key;
-			$responseObj->msg = "License successfully verified";
-			$responseObj->renew_link = "";
-			$responseObj->expire_renew_link = "";
-			$responseObj->support_renew_link = "";
-			$this->SaveWPResponse( $responseObj );
-			unset( $responseObj->next_request );
-			delete_transient( $this->product_base . '_up' );
-			return true;
+				$responseObj = new \stdClass();
+				$responseObj->is_valid = true;
+				$responseObj->next_request = strtotime('+5 years');
+				$responseObj->expire_date = "12/12/2099";
+				$responseObj->support_end = "12/12/2099";
+				$responseObj->license_title = "GPL Special";
+				$responseObj->license_key = $purchase_key;
+				$responseObj->msg = "License successfully verified";
+				$responseObj->renew_link = "";
+				$responseObj->expire_renew_link = "";
+				$responseObj->support_renew_link = "";
+				$this->SaveWPResponse( $responseObj );
+				unset( $responseObj->next_request );
+				delete_transient( $this->product_base . '_up' );
+				return true;			
 			$oldRespons = $this->getOldWPResponse();
 			$isForce    = false;
 			if ( ! empty( $oldRespons ) ) {

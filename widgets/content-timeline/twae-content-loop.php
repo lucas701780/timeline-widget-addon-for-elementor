@@ -4,7 +4,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 		exit; // Exit if accessed directly.
 	}
 	/**
-	 * Class Twae_Story_Loop
+	 * Class Twae_Content_Loop
 	 *
 	 * This class handles the post loop functionality.
 	 */
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 		private $title_tag = '';
 
 		/**
-		 * Constructor for Twae_Story_Loop class.
+		 * Constructor for Twae_Content_Loop class.
 		 *
 		 * @param array $post_data Post loop data.
 		 * @param array $post_settings The settings for the post.
@@ -58,7 +58,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 			$label_content_top    = $post_settings['twae_post_label_content_top'];
 			$label_content_inside = 'twae-label-content-top' !== $label_content_top && 'twae_image_outside' === $post_image_outside ? 'twae-label-content-inside' : $post_settings['twae_post_label_inside'];
 			$post_html            = '';
-			$higlighted_content   = '';
+			$highlighted_content  = '';
 			$icon_data            = $this->twae_post_icon();
 			$twae_bg_type         = $post_settings['twae_background_type'];
 			$animation_attribute  = '';
@@ -93,14 +93,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 				! empty( $icon_data['class'] ) && array_push( $twae_repeater_cls, esc_attr( $icon_data['class'] ) );
 				// Timeline position class.
 				! empty( $dynamic_cls ) && array_push( $twae_repeater_cls, esc_attr( $dynamic_cls ) );
-				// Lable content inside class.
-				! empty( $label_content_inside ) && array_push( $twae_repeater_cls, esc_attr( $label_content_inside ) );
-				// label content top class.
-				! empty( $label_content_top ) && array_push( $twae_repeater_cls, esc_attr( $label_content_top ) );
-				// image out of the box class.
-				! empty( $post_image_outside ) && array_push( $twae_repeater_cls, esc_attr( $post_image_outside ) );
-				// Background hover class.
-				isset( $post_settings['twae_bg_hover'] ) && ! empty( $post_settings['twae_bg_hover'] ) && array_push( $twae_repeater_cls, esc_attr( $post_settings['twae_bg_hover'] ) );
+
 				$twae_repeater_cls = implode( ' ', $twae_repeater_cls );
 
 				// Timeline multicolor date attribute.
@@ -115,7 +108,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 				$twae_content_cls = implode( ' ', $twae_content_cls );
 
 				// Timeline repeater wrapper start.
-				$post_html .= '<div  class="' . esc_attr( $twae_repeater_cls ) . '"' . $twae_multicolor_attr . $twae_data_index . '>';
+				$post_html .= '<div class="' . esc_attr( $twae_repeater_cls ) . '"' . $twae_multicolor_attr . $twae_data_index . '>';
 
 				if ( 'horizontal' === $layout || 'horizontal-bottom' === $layout || 'horizontal-highlighted' === $layout ) {
 					$post_html .= '<div class="twae-story-line"></div>';
@@ -129,7 +122,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 					$post_html .= $icon_data['html'];
 				}
 				$post_html .= '<div class="' . esc_attr( $post_settings['connector_style'] ) . '" ></div>';
-				$post_html .= ' <div class="' . esc_attr( $twae_content_cls ) . '"' . $animation_attribute . '>';
+				$post_html .= '<div class="' . esc_attr( $twae_content_cls ) . '"' . $animation_attribute . '>';
 
 				// label inside or top the article.
 				if ( ( ! empty( $label_content_top ) || ! empty( $label_content_inside ) ) && 'horizontal-highlighted' !== $layout ) {
@@ -139,7 +132,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 				// post title.
 				$post_html .= $this->twae_post_title();
 
-				// image and description in popup disabel.
+				// image and description in popup disable.
 				if ( 'no' === $post_settings['enable_popup'] ) {
 					$post_html .= $this->twae_post_image();
 					$post_html .= $this->twae_post_desc();
@@ -161,7 +154,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 				}
 
 				if ( 'horizontal-highlighted' === $layout ) {
-					$higlighted_content .= $this->twae_highlighted_content( $icon_data );
+					$highlighted_content .= $this->twae_highlighted_content( $icon_data );
 				}
 
 				// Story multicolor index.
@@ -171,7 +164,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 			}
 			$data = array( 'post_html' => $post_html );
 			if ( 'horizontal-highlighted' === $layout ) {
-				$data['highlighted_content'] = $higlighted_content;
+				$data['highlighted_content'] = $highlighted_content;
 			}
 			return $data;
 		}
@@ -275,7 +268,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 			} else {
 				$icon_cls   = 'twae-story-icon';
 				$icon_html .= '<div class="twae-icon">';
-				$icon       = Twae_Functions::twae_get_post_icons( $post_settings['post_custom_icon'] );
+				$icon       = Twae_Functions::twae_render_icon_html( $post_settings['post_custom_icon'] );
 				$icon_html .= $icon;
 				$icon_html .= '</div>';
 			}
@@ -299,7 +292,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 			$twae_label_enable    = $post_settings['twae_label_background'];
 			$twae_label_connector = $post_settings['twae_label_connector_style'];
 			if ( ! empty( $post_settings['custom_metakey'] ) ) {
-				$story_date_label1 = wp_kses_post( get_post_meta( $post_id, $post_settings['custom_metakey'], 'true' ) );
+				$story_date_label1 = wp_kses_post( get_post_meta( $post_id, $post_settings['custom_metakey'], true ) );
 				$story_date_label  = date( $post_settings['date_format'], strtotime( $story_date_label1 ) );
 			} else {
 				$story_date_label = get_the_date( $post_settings['date_format'] );
@@ -347,7 +340,7 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 					$html .= sprintf(
 						'<div class="twae-button"><a class="elementor-button" href="%1$s">%2$s</a></div>',
 						esc_url( get_permalink( get_the_ID() ) ),
-						__( $readmore_text, 'twae' )
+						esc_html__( $readmore_text, 'twae' )
 					);
 			}
 			return $html;
@@ -383,11 +376,10 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 			$post_settings = $this->post_settings;
 
 			$highlighted_cls = array(
-				'twae-highlighted-hr',
 				'swiper-slide',
 			);
 
-			! empty( $post_settings['twae_bg_hover'] ) && array_push( $highlighted_cls, $post_settings['twae_bg_hover'] );
+			! empty( $post_settings['twae_bg_hover'] ) && array_push( $highlighted_cls, esc_attr( $post_settings['twae_bg_hover'] ) );
 			$highlighted_article = implode( ' ', $highlighted_cls );
 
 			$html  = '<div class="' . esc_attr( $highlighted_article ) . '">';
@@ -398,5 +390,3 @@ if ( ! class_exists( 'Twae_Content_Loop' ) ) {
 		}
 	}
 }
-
-
