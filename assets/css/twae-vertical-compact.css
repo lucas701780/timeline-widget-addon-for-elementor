@@ -1,0 +1,201 @@
+/* -------------------------- Compact Story - START ------------------------- */
+.twae-vertical.twae-wrapper .twae-compact .twae-story {
+  width: 50%;
+  margin-top: calc(var(--tw-lbl-big-size) + var(--tw-lbl-small-size) + var(--tw-lbl-gap) + 10px);
+}
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-story {
+  margin-top: calc(var(--tw-lbl-big-size) + 10px);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left {
+  padding: 0px var(--tw-ibx-size) 0px 0px;
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right {
+  padding: 0px 0px 0px var(--tw-ibx-size);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story:nth-child(2) {
+  margin-top: calc(var(--tw-lbl-big-size)*2 + 51px + var(--tw-ibx-size) + var(--tw-ibx-size)/ 2 + var(--lbl-bd-width)*2)!important;
+}
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-story:nth-child(2)  {
+  margin-top: calc(var(--tw-lbl-big-size) + 25px + var(--tw-ibx-size)) !important;
+}
+/* --------------------------- Compact Story - END -------------------------- */
+
+/* --------------------------- Compact Story slider - start -------------------------- */
+.twae-timeline.twae-compact .twae-slideshow .swiper-wrapper img{
+  max-height: 300px !important;
+  width: 100% !important;
+  object-fit: cover;
+  object-position: center;
+}
+/* --------------------------- Compact Story slider - end -------------------------- */
+
+/* ----------------------------- Labels - START ----------------------------- */
+.twae-vertical.twae-wrapper .twae-compact .twae-labels {
+  top: calc(0px - var(--tw-lbl-big-size) - var(--tw-lbl-small-size) - var(--tw-lbl-gap) - 10px);
+  width: calc(100% - var(--tw-ibx-size));
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-label-content-inside .twae-labels,
+.twae-vertical.twae-wrapper .twae-compact .twae-label-content-top .twae-labels{
+  width: 100%;
+}
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-labels {
+  top: calc(0px - var(--tw-lbl-big-size) - 10px);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story-left .twae-labels {
+  right: var(--tw-ibx-size);
+  text-align: right;
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story-right .twae-labels {
+  left: var(--tw-ibx-size);
+  text-align: left;
+}
+/* ------------------------------ Labels - END ------------------------------ */
+
+
+
+/* ------------------------------ Icon - START ------------------------------ */
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left .twae-icon {
+  right: calc(0px - var(--tw-ibx-size) / 2);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right .twae-icon {
+  left: calc(0px - var(--tw-ibx-size) / 2);
+}
+/* ------------------------------- Icon - END ------------------------------- */
+/* ---------------------------- Icon Dot - START ---------------------------- */
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left .twae-icondot {
+  right: calc(0px - var(--tw-ibx-size) / 4);
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right .twae-icondot {
+  left: calc(0px - var(--tw-ibx-size) / 4);
+}
+/* ----------------------------- Icon Dot - END ----------------------------- */
+
+
+
+/* ------------------------------ Arrow - START ----------------------------- */
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left .twae-arrow {
+  right: calc(var(--tw-ibx-size) + var(--tw-ibx-size) / 7 - var(--tw-ibx-size) / 3.5 + var(--tw-cbx-bd-left-width) / 3);
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right .twae-arrow {
+  left: calc(var(--tw-ibx-size) + var(--tw-ibx-size) / 7 - var(--tw-ibx-size) / 3.5 + var(--tw-cbx-bd-left-width) / 3);
+}
+/* ------------------------------- Arrow - END ------------------------------ */
+/* --------------------------- Arrow Line - START --------------------------- */
+.twae-vertical.twae-wrapper .twae-compact .twae-story-left .twae-arrow-line {
+  right: calc(0px + var(--tw-ibx-size) / 2);
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story-right .twae-arrow-line {
+  left: calc(0px + var(--tw-ibx-size) / 2);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story-left.twae-story-no-icon .twae-arrow-line {
+  right: calc(0px + var(--tw-ibx-size) / 4);
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-icon .twae-arrow-line {
+  left: calc(0px + var(--tw-ibx-size) / 4);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-dot .twae-arrow-line {
+  left: calc(0px + var(--tw-line-width) / 2);
+}
+.twae-vertical.twae-wrapper .twae-compact .twae-story-left.twae-story-no-dot .twae-arrow-line {
+  right: calc(0px + var(--tw-line-width) / 2);
+}
+/* ---------------------------- Arrow Line - END ---------------------------- */
+
+/* compact labels css */
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-labels {
+  top: calc(0px - var(--tw-lbl-big-size) - 26px - var(--lbl-bd-width)*2)!important;
+}
+
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-story:nth-child(2) {
+  margin-top: calc(var(--tw-lbl-big-size)*2 + 51px + var(--tw-ibx-size) + var(--tw-ibx-size)/ 2 + var(--lbl-bd-width)*2)!important;
+}
+
+.twae-vertical .twae-compact .twae-story-left.twae-story-no-dot .twae-label-bg.twae-lbl-arrow-line .twae-inner-label::after, .twae-vertical .twae-compact .twae-story-left.twae-story .twae-label-bg.twae-lbl-arrow-line .twae-inner-label::after,.twae-vertical .twae-compact .twae-story-left.twae-story-no-icon .twae-label-bg.twae-lbl-arrow-line .twae-inner-label::after{
+  right: calc(0px - var(--tw-ibx-size) + var(--tw-line-width) * .5 - var(--lbl-bd-width));
+  left: unset ;
+}
+
+.twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-story {
+  margin-top: calc(var(--tw-lbl-big-size) + 26px + var(--lbl-bd-width)*2);
+}
+
+.twae-vertical-left .twae-story-right.twae-story-no-dot .twae-label-bg.twae-lbl-arrow-line .twae-inner-label::after {
+  left: calc(0px - var(--tw-ibx-size) + var(--tw-line-width) * .5 - var(--lbl-bd-width));
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-story {
+  margin-top: calc(var(--tw-lbl-big-size) + var(--tw-lbl-small-size) + var(--tw-lbl-gap) + 26px + var(--lbl-bd-width)*2);
+}
+
+.twae-vertical.twae-wrapper .twae-compact .twae-labels {
+  top: calc(0px - var(--tw-lbl-big-size) - var(--tw-lbl-small-size) - var(--tw-lbl-gap) - 26px - var(--lbl-bd-width)*2);
+}
+
+/* --------------------------- Responsive - START --------------------------- */
+@media screen and (max-width: 767px) {
+
+  /* -------------------------- Compact Story - START ------------------------- */
+  .twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story:nth-child(2),
+  .twae-vertical.twae-wrapper.twae-post-timeline .twae-compact .twae-story:nth-child(2) {
+    padding-right: 0px;
+    width: calc(100% - var(--tw-ibx-size) * 1.5);
+    margin-top: 0 !Important;
+  }
+  /* --------------------------- Compact Story - END -------------------------- */
+
+  /* ----------------------------- Labels - START ----------------------------- */
+  .twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-right .twae-labels,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story.twae-story-left .twae-labels {
+    top: 0 !important;
+    right: 0;
+    left: auto;
+    width: 100%;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .twae-vertical .twae-compact .twae-story-left .twae-label-bg.twae-lbl-arrow .twae-inner-label:before{
+    left: calc(0px + var(--tw-ibx-size)/ 7 - var(--lbl-bd-width)/ 3 - var(--tw-ibx-size)/ 3.5);
+    rotate: 45deg;
+    right: auto;
+  }
+  /* ------------------------------ Labels - END ------------------------------ */
+
+  /* --------------------------- Arrow Line - START --------------------------- */
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-right .twae-arrow-line,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-left .twae-arrow-line {
+    width: calc(var(--tw-ibx-size) / 2);
+    /* left: var(--tw-ibx-size); */
+    right: auto;
+  }
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-icon .twae-arrow-line,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-left.twae-story-no-icon .twae-arrow-line {
+    width: calc(var(--tw-ibx-size) - var(--tw-ibx-size) / 4);
+    left: calc(var(--tw-ibx-size) / 2 + var(--tw-ibx-size) / 4);
+    right: auto;
+  }
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-right.twae-story-no-dot .twae-arrow-line,
+  .twae-vertical.twae-wrapper .twae-compact .twae-story-left.twae-story-no-dot .twae-arrow-line {
+    width: calc(var(--tw-ibx-size) - var(--tw-line-width) / 2);
+    right: auto;
+  }
+  /* ---------------------------- Arrow Line - END ---------------------------- */
+
+  /* ------------------------------ Icon - START ------------------------------ */
+
+  .twae-vertical .twae-compact .twae-story .twae-label-bg.twae-lbl-arrow-line .twae-inner-label::after {
+    left: calc(0px - var(--tw-ibx-size) + var(--tw-line-width) * .5 - var(--lbl-bd-width))!important;
+  }
+  /* ------------------------------- Icon - END ------------------------------- */
+}
+/* ---------------------------- Responsive - END ---------------------------- */
+
+/* compact labels css */

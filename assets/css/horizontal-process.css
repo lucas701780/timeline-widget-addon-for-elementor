@@ -1,0 +1,421 @@
+/* ----------------------------- Default Styles ----------------------------- */
+
+/*.................... Custom CSS - START .................... */
+.pswfe-steps {
+  --e-global-color-white: #ffffff;
+  --step-container-background-color:transparent;
+  --step-container-border-radius:0;
+  --step-container-margin:0;
+  --step-container-padding:0;
+  --steps-width: 100%;
+  --step-padding: 20px;
+
+  --bar-color: var(--e-global-color-secondary);
+  --bar-size: 4px;
+  --bar-gap: 10px;
+
+  --marker-size: 6;
+  /* --marker-border-color: var(--e-global-color-accent);
+    --marker-border-style: dashed;
+    --marker-border-width: 4px; */
+  --marker-background-color: var(--e-global-color-primary);
+  --marker-border-radius: 50%;
+  --marker-color: var(--e-global-color-text);
+  --marker-text-size: 5px;
+
+  --badge-background-color: var(--e-global-color-secondary);
+  /* --badge-border-style: dashed;
+    --badge-border-width: 4px;
+    --badge-border-color: var(--e-global-color-accent); */
+  --badge-color: var(--e-global-color-white);
+  --badge-border-radius: 50%;
+  --badge-font-size: 2px;
+  --badge-font-weight: bold;
+  --badge-padding: 11px 11px 11px 11px;
+  --badge-top-pos: calc(var(--marker-size) * 1px);
+  --badge-right-pos: calc((var(--marker-size) * 1px) / 2);
+   --badge-text-bd-radius:20px;
+
+  --arrow-border-color: var(--e-global-color-secondary, #222);
+  --arrow-border-style: dashed;
+  --arrow-border-width: 2px;
+
+  --step-content-padding: 5px 5px 5px 0px;
+  --content-heading-font-size: 2rem;
+  --content-heading-align: center;
+  --content-desc-align: center;
+  --content-desc-font-size: 1rem;
+  --content-title-color: var(--e-global-color-text, #222);
+  --content-bg-title-color: #fff;
+  --content-desc-color: var(--e-global-color-text);
+  --content-bg-color: #fff;
+  --content-desc-font-family: var(--e-global-typography-secondary-font-family);
+  --content-desc-font-weight: var(--e-global-typography-secondary-font-weight);
+  --active-badge-color: #fff;
+  --active-bg-badge-color: #222;
+  --active-bar-color: #f13e3e;
+  --step-animation-hover-color:#f13e3e;
+}
+
+
+/*.................... Custom CSS - END .................... */
+
+/*.................... Step Container CSS - START ....................*/
+.pswfe-steps {
+  display: flex;
+  position: relative;
+  list-style-type: none;
+  font-family: var(--e-global-typography-primary-font-family); 
+  padding: var(--step-padding);
+  margin: 20px auto;
+  overflow: auto;
+  border-radius: var(--step-container-border-radius);
+}
+
+/*.................... Step Container CSS - END ....................*/
+
+/*.................... Step  Segment CSS - START  ....................*/
+.pswfe-steps .pswfe-steps-segment {
+  flex: 1;
+  position: relative;
+  border-radius: var(--step-container-border-radius);
+  padding:var(--step-container-padding);
+  margin: var(--step-container-margin);
+  background-color: var(--step-container-background-color);  
+  min-width: 0;
+}
+
+.pswfe-steps .pswfe-steps-segment:not(:last-child) {
+  padding-bottom: calc((var(--marker-size) * 1rem) / 2);
+}
+
+/*.................... Step  Segment CSS - END  ....................*/
+
+/* ....................Step Marker CSS - START ....................*/
+
+ul.pswfe-steps .pswfe-steps-marker {
+  width: calc(var(--marker-size) * 1rem);
+  height: calc(var(--marker-size) * 1rem);
+  background-color: var(--marker-background-color);
+  display: flex;
+   justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: var(--marker-border-radius);
+  /* border-width: var(--marker-border-width);
+    border-color: var(--marker-border-color);
+    border-style: var(--marker-border-style); */
+  font-size: calc((var(--marker-size) * 1rem) / 3);
+  left: calc(50% - (var(--marker-size) * 1rem) / 2);
+   color: var(--marker-color); 
+   /* overflow: hidden; */
+}
+
+.pswfe-steps span.pswfe-marker-text {
+  width: calc((var(--marker-size) * var(--marker-text-size)));
+  height: calc((var(--marker-size) * var(--marker-text-size)));
+  fill: var(--marker-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pswfe-steps-marker img.pswfe-marker-image {
+  height: 100%;
+  border-radius: var(--marker-border-radius);
+  width: 100%;
+}
+
+.pswfe-steps-marker:hover {
+  box-shadow: 0 0 15px var(--marker-background-color);
+}
+
+.pswfe-marker-text {
+  font-size: calc((var(--marker-size) * var(--marker-text-size)));
+  font-family: var(--e-global-typography-primary-font-family);
+  font-weight: var(--e-global-typography-primary-font-family);
+  z-index: 99;
+}
+
+.pswfe-steps .pswfe-steps-segment.is-active .pswfe-steps-marker.is-active,
+.pswfe-steps .pswfe-steps-segment.is-active .pswfe-marker-text.is-active {
+  box-shadow: 0px 0px 10px var(--active-bar-color);
+  background-color: var(--active-bar-color);
+  color: white;
+}
+
+/* ....................Step Marker CSS - END ....................*/
+
+/*.................... Step Content CSS - START ....................*/
+.pswfe-steps-content {
+  padding: var(--step-content-padding);
+  
+  border-radius: var(--content-border-radius);
+  overflow: auto;
+  margin: 0 auto;
+  padding-bottom: 0 !important;
+  margin-top: 0;
+}
+
+.pswfe-steps-content .pswfe-title {
+  line-height: initial;
+  font-size: var(--content-heading-font-size);
+  text-align: var(--content-heading-align);
+  color: var(--content-title-color);
+  word-break: break-word;
+  font-family: var(--content-title-font-family);
+  font-weight: var(--content-title-font-weight);
+}
+
+.pswfe-steps-content .pswfe-content-desc {
+  text-align: var(--content-desc-align);
+  font-size: var(--content-desc-font-size);
+  color: var(--content-desc-color);
+
+  font-family: var(--content-desc-font-family);
+  font-weight: var(--content-desc-font-weight);
+  word-break: break-word;
+}
+
+.pswfe-steps-segment.is-active .pswfe-steps-content .pswfe-title {
+  color: var(--active-bar-color);
+}
+
+/*.................... Step Content CSS - END ....................*/
+
+/*.................... step bar css  ....................*/
+
+.pswfe-steps .pswfe-has-arrow:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: auto;
+  border-right: var(--bar-size) solid var(--bar-color);
+  border-top: var(--bar-size) solid var(--bar-color);
+  right: calc(-50% + (var(--marker-size) * 1rem) / 2 + var(--bar-size) / 1.5);
+  transform: rotate(45deg);
+  margin: var(--step-container-margin);
+  height: calc(var(--bar-size) * 3);
+  width: calc(var(--bar-size) * 3);
+  top: calc((var(--marker-size) * 1rem) / 2 - (var(--bar-size) * 3) / 2);
+  z-index: 101;
+ 
+}
+
+.pswfe-steps .pswfe-steps-segment:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(50% + (var(--marker-size) * 1rem) / 2);
+  right: calc(-50% + (var(--marker-size) * 1rem) / 2);
+  background-color: var(--bar-color);
+  height: var(--bar-size);
+  margin: var(--step-container-margin);
+  top: calc((var(--marker-size) * 1rem) / 2 - var(--bar-size) / 2);
+  z-index: 99;
+}
+
+.pswfe-steps .pswfe-has-arrow.pswfe-steps-segment:not(:last-child)::after {
+  right: calc(-50% + (var(--marker-size) * 1rem) / 2 + var(--bar-size));
+  z-index: 100;
+}
+
+.pswfe-steps .pswfe-has-gap.pswfe-steps-segment:not(:last-child)::after {
+  left: calc(50% + (var(--marker-size) * 1rem) / 2 + var(--bar-gap));
+  right: calc(-50% + (var(--marker-size) * 1rem) / 2 + var(--bar-gap) + var(--bar-size));
+}
+
+.pswfe-steps .pswfe-has-gap.pswfe-has-arrow:not(:last-child)::before {
+  right: calc(-50% + (var(--marker-size) * 1rem) / 2 + var(--bar-size) / 2 + var(--bar-gap));
+}
+
+.pswfe-steps.pswfe-is-dashed .pswfe-steps-segment::after,
+.pswfe-steps .pswfe-steps-segment.pswfe-is-dashed::after {
+  background: repeating-linear-gradient(90deg,
+      var(--bar-color),
+      var(--bar-color) 5px,
+      transparent 5px,
+      transparent 10px) !important;
+}
+
+.pswfe-steps .pswfe-has-arrow.is-active::before {
+  border-right: calc(var(--bar-size)) solid var(--active-bar-color);
+  border-top: calc(var(--bar-size)) solid var(--active-bar-color);
+}
+
+.pswfe-steps .pswfe-steps-segment.is-active::after {
+  background-color: var(--active-bar-color) !important;
+}
+
+.pswfe-steps.pswfe-is-dashed .pswfe-steps-segment.is-active:after,
+.pswfe-steps .pswfe-steps-segment.pswfe-is-dashed.is-active:after {
+  background: repeating-linear-gradient(90deg,
+      var(--active-bar-color),
+      var(--active-bar-color) 5px,
+      transparent 5px,
+      transparent 10px) !important;
+}
+
+/*.................... Step Bar CSS - END  ....................*/
+
+/*.................... Badge CSS - START  ....................*/
+.pswfe-badge {
+ 
+  position: absolute;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 22px;
+  padding: var(--badge-padding);
+  color: var(--badge-color);
+  width: calc(var(--marker-size) * 2px);
+  height: calc(var(--marker-size) * 2px);
+  border-radius: var(--badge-border-radius);
+  background-color: var(--badge-background-color);
+  font-size:calc(var(--marker-size) * var(--badge-font-size));
+  font-weight: var(--badge-font-weight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  z-index: 99;
+/* 
+    position: absolute;
+    top: var(--badge-top-pos);
+    right: var(--badge-right-pos);
+    overflow: hidden;
+    padding: var(--badge-padding);
+    max-width: 200%;
+ 
+    border-radius: var(--badge-border-radius);
+    background-color: var(--badge-background-color);
+    color: var(--badge-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size:calc(var(--marker-size) * var(--badge-font-size));
+    line-height: 1;*/
+}
+.pswfe-badge.steps.top-left,.pswfe-badge.top-left {
+  left: var(--badge-right-pos);
+  top: var(--badge-top-pos);
+}
+.pswfe-badge.steps.top-right,.pswfe-badge.top-right {
+  right: var(--badge-right-pos);
+  top: var(--badge-top-pos);
+
+}
+.pswfe-badge.steps.bottom-left,.pswfe-badge.bottom-left {
+  left: var(--badge-right-pos);
+  bottom: var(--badge-top-pos);
+}
+.pswfe-badge.steps.bottom-right,.pswfe-badge.bottom-right {
+  right: var(--badge-right-pos);
+  bottom: var(--badge-top-pos);
+}
+
+.pswfe-badge.steps{
+  border-radius: var(--badge-text-bd-radius);
+  width: auto;
+  max-width: 100%;
+}
+.pswfe-steps .pswfe-steps-segment.is-active .pswfe-steps-marker .pswfe-badge.is-active {
+  background-color: var(--active-bg-badge-color);
+  color: var(--active-badge-color);
+  /* border-color: #ffffff;
+    border-style: solid; */
+}
+
+/*.................... Badge CSS - END  ....................*/
+
+/*.................... Media Query - START  ....................*/
+
+@media screen and (max-width: 768px) {
+  ul.pswfe-steps {
+    --content-heading-align: left;
+    --content-desc-align: left;
+    --marker-size: 6;
+  }
+
+  /*.................... Step Marker CSS - START .................... */
+
+  ul.pswfe-steps .pswfe-steps-marker {
+    left: auto;
+  }
+
+  /*.................... Step Marker CSS - END .................... */
+
+  /*....................  Step Content CSS - START  ....................*/
+  .pswfe-steps .pswfe-steps-content {
+    margin-left: calc(var(--marker-size) * 1rem + 1rem);
+    margin-top: calc(0px - var(--marker-size) * 1rem);
+    padding-left: 1em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-height: calc(var(--marker-size) * 1rem);
+  }
+
+  /*....................  Step Content CSS - END  ....................*/
+
+  /*....................   Steps Container CSS *....................  */
+  .pswfe-steps {
+    flex-direction: column;
+    width: var(--steps-width);
+  }
+
+  /*....................    Steps Container CSS - END ....................  */
+
+  /* ....................    Step Bar CSS - START  ....................  */
+  .pswfe-steps .pswfe-has-arrow:not(:last-child)::before {
+    left: calc((var(--marker-size) * 1rem) / 2 - var(--bar-size) * 1.5);
+    right: auto !important;
+    top: auto;
+    bottom: calc(var(--bar-size) / 1.5);
+    transform: rotate(135deg);
+  }
+
+  .pswfe-steps .pswfe-steps-segment:not(:last-child):after {
+    left: calc((var(--marker-size) * 1rem) / 2 - var(--bar-size) / 2) !important;
+    right: auto !important;
+    top: calc((var(--marker-size) * 1rem));
+    bottom: 0;
+    width: var(--bar-size);
+    background-color: var(--bar-color);
+    height: auto;
+  }
+
+  .pswfe-steps .pswfe-has-arrow.pswfe-steps-segment:not(:last-child)::after {
+    bottom: var(--bar-size);
+  }
+
+  .pswfe-steps .pswfe-has-gap.pswfe-steps-segment:not(:last-child):after {
+    top: calc(var(--marker-size) * 1rem + var(--bar-gap)) !important;
+    bottom: calc(0px + var(--bar-gap) + var(--bar-size)) !important;
+  }
+
+  .pswfe-steps .pswfe-has-gap.pswfe-has-arrow:not(:last-child)::before {
+    bottom: calc(0px + var(--bar-gap) + var(--bar-size) / 1.5) !important;
+  }
+
+  .pswfe-steps.pswfe-is-dashed .pswfe-steps-segment:after,
+  .pswfe-steps .pswfe-steps-segment.pswfe-is-dashed:after {
+    background: repeating-linear-gradient(180deg,
+        var(--bar-color),
+        var(--bar-color) 5px,
+        transparent 5px,
+        transparent 10px) !important;
+  }
+
+  .pswfe-steps.pswfe-is-dashed .pswfe-steps-segment.is-active:after,
+  .pswfe-steps .pswfe-steps-segment.pswfe-is-dashed.is-active:after {
+    background: repeating-linear-gradient(180deg,
+        var(--active-bar-color),
+        var(--active-bar-color) 5px,
+        transparent 5px,
+        transparent 10px) !important;
+  }
+
+  /* ....................    Step Bar CSS - END  ....................  */
+}
+
+
+
+
+/*.................... Media Query - END  ....................*/

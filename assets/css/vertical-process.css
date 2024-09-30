@@ -1,0 +1,377 @@
+/*.................... Custom CSS - START .................... */
+.pswfe-vertical-steps {
+  --e-global-color-white: #ffffff;
+ --step-container-background-color:transparent;
+  --step-container-border-radius:0;
+  --step-container-margin:0;
+  --step-container-padding:0;
+  --step-padding: 20px;
+
+  --bar-color: var(--e-global-color-secondary);
+  --bar-size: 4px;
+  --bar-gap: 5px;
+  --bar-border-color: var(--e-global-color-accent);
+
+  --marker-size: 6;
+  --marker-border-color: var(--e-global-color-accent);
+  --marker-border-style: dashed;
+  --marker-border-width: 2px;
+  --marker-background-color: var(--e-global-color-primary);
+  --marker-border-radius: 50%;
+  --marker-color: var(--e-global-color-text);
+  --marker-text-size: 7px;
+  --badge-color: var(--e-global-color-white);
+  --badge-background-color: var(--e-global-color-secondary);
+  --badge-border-style: solid;
+  --badge-border-width: 4px;
+  --badge-border-color: var(--e-global-color-accent);
+  --badge-border-radius: 50%;
+  --badge-font-size: 2px;
+  --badge-font-weight: bold;
+  --badge-padding: 11px 11px 11px 11px;
+  --badge-top-pos: calc(var(--marker-size) * 1px);
+  --badge-right-pos: calc((var(--marker-size) * 1px) / 2);
+   --badge-text-bd-radius:20px;
+
+  --arrow-border-color: var(--e-global-color-secondary, #222);
+  --arrow-border-style: dashed;
+  --arrow-border-width: 2px;
+
+  --step-content-padding: 5px 5px 5px 5px;
+  --step-content-margin: 5px 5px 5px 5px;
+
+  --content-background-color: ;
+  --content-border-radius: 6px 6px 6px 6px;
+  --content-heading-font-size: 2rem;
+  --content-heading-align: left;
+  --content-desc-align: left;
+  --content-desc-font-size: 1rem;
+  --content-arrow-top-pos: 16%;
+  --content-title-color: var(--e-global-color-text, #222);
+  --content-bg-title-color: ;
+  --content-desc-color: var(--e-global-color-text);
+  --content-bg-color: ;
+  --content-desc-font-family: var(--e-global-typography-secondary-font-family);
+  --content-desc-font-weight: var(--e-global-typography-secondary-font-weight);
+  --content-title-font-family: var(--e-global-typography-secondary-font-family);
+  --content-title-font-weight: var(--e-global-typography-secondary-font-weight);
+  --content-width: 600px;
+  --active-badge-color: #fff;
+  --active-bg-badge-color: #222;
+  --active-bar-color: #f13e3ef2;
+  --step-animation-hover-color:#f13e3e;
+}
+
+/*.................... Custom CSS - END .................... */
+
+/*.................... Step Container CSS - START ....................*/
+.pswfe-vertical-steps {
+  display: flex;
+  position: relative;
+  list-style-type: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: var(--step-container-border-radius);
+  padding: var(--step-padding);
+  margin: 20px auto;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+/*.................... Step Container CSS - END ....................*/
+
+/*.................... Step  Segment CSS - START  ....................*/
+.pswfe-vertical-steps .pswfe-vertical-steps-segment {
+  flex: 1;
+  position: relative;
+   border-radius: var(--step-container-border-radius);
+  padding:var(--step-container-padding);
+  margin: var(--step-container-margin);
+  background-color: var(--step-container-background-color); 
+  min-width: 0;
+  min-height: 0;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment:not(:last-child) {
+  padding-bottom: calc((var(--marker-size) * 1rem) / 2);
+}
+
+/* .pswfe-vertical-steps .pswfe-vertical-steps-segment:not(:last-child):after {
+    left: calc((var(--marker-size)*1rem)/2 - var(--bar-size)/2);
+    right: auto;
+    top: calc((var(--marker-size)*1rem));
+    bottom: 0px;
+    width: var(--bar-size);
+    background-color: var(--bar-color);
+    height: auto;
+} */
+
+/*.................... Step  Segment CSS - END  ....................*/
+
+/* ....................Step Marker CSS - START ....................*/
+
+.pswfe-vertical-steps .pswfe-vertical-steps-marker {
+  width: calc(var(--marker-size) * 1rem);
+  height: calc(var(--marker-size) * 1rem);
+  background-color: var(--marker-background-color);
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: var(--marker-border-radius);
+  /* border-width: var(--marker-border-width);
+    border-color: var(--marker-border-color);
+    border-style: var(--marker-border-style); */
+  font-size: calc((var(--marker-size) * 1rem) / 3);
+  color: var(--marker-color);
+}
+
+.pswfe-vertical-steps img.pswfe-vertical-marker-image {
+  height: 100%;
+  border-radius: var(--marker-border-radius);
+  width: 100%;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-marker:hover {
+  box-shadow: 0 0 15px var(--marker-background-color);
+}
+
+.pswfe-vertical-steps .pswfe-vertical-marker-text {
+  font-size: calc(var(--marker-size) * var(--marker-text-size));
+  font-family: var(--e-global-typography-primary-font-family);
+  font-weight: var(--e-global-typography-primary-font-family);
+  z-index: 99;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.is-active .pswfe-vertical-marker-text.is-active {
+  color: white;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.is-active .pswfe-vertical-steps-marker {
+  box-shadow: 0px 0px 10px var(--active-bar-color);
+  background-color: var(--active-bar-color);
+  color: white;
+  border-color: var(--active-bar-color) !important;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.is-active .pswfe-vertical-steps-marker .pswfe-vertical-badge.is-active {
+  background-color: var(--active-bg-badge-color);
+  color: var(--active-badge-color);
+}
+
+/* ....................Step Marker CSS - END ....................*/
+
+/*.................... Step Content CSS - START ....................*/
+
+.pswfe-vertical-steps .pswfe-vertical-steps-content {
+  margin-left: calc(var(--marker-size) * 1rem + 2rem);
+  margin-top: calc(0px - var(--marker-size) * 1rem);
+  background-color: var(--content-background-color);
+  padding: var(--step-content-padding);
+  border-radius: var(--content-border-radius);
+  width: calc(var(--content-width) - var(--marker-size) * 1rem - 2rem - var(--step-content-padding));
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  min-height: calc(var(--marker-size) * 1rem);
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-content .pswfe-vertical-title {
+  line-height: initial;
+  font-size: var(--content-heading-font-size);
+  text-align: var(--content-heading-align);
+  color: var(--content-title-color);
+  word-break: break-word;
+  font-family: var(--content-title-font-family);
+  font-weight: var(--content-title-font-weight);
+  margin: 0;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-content .pswfe-vertical-content-desc {
+  text-align: var(--content-desc-align);
+  font-size: var(--content-desc-font-size);
+  color: var(--content-desc-color);
+
+  font-family: var(--content-desc-font-family);
+  font-weight: var(--content-desc-font-weight);
+  word-break: break-word;
+}
+
+.pswfe-vertical-steps-segment.is-active .pswfe-vertical-steps-content .pswfe-vertical-title {
+  color: var(--active-bar-color);
+}
+
+/*.................... Step Content CSS - END ....................*/
+
+/*.................... step bar css  ....................*/
+.pswfe-vertical-steps .pswfe-vertical-has-arrow:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: calc((var(--marker-size) * 1rem) / 2 - var(--bar-size) * 1.5);
+  top: auto;
+  margin: var(--step-container-margin);
+  bottom: calc(var(--bar-size) / 1.5);
+  border-right: var(--bar-size) solid var(--bar-color);
+  border-bottom: var(--bar-size) solid var(--bar-color);
+  transform: rotate(45deg);
+  height: calc(var(--bar-size) * 3);
+  width: calc(var(--bar-size) * 3);
+  z-index: 101;
+
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment:not(:last-child):after {
+  content: "";
+  position: absolute;
+  left: calc((var(--marker-size) * 1rem) / 2 - var(--bar-size) / 2);
+  right: auto;
+  top: calc(var(--marker-size) * 1rem);
+  bottom: 0;
+  width: var(--bar-size);
+  background-color: var(--bar-color);
+  height: auto;
+  z-index: 100;
+  margin: var(--step-container-margin);
+  /* border-color: var(--bar-border-color);
+    border-style: solid;
+    border-width: 0 1px; */
+}
+
+.pswfe-vertical-steps .pswfe-vertical-has-arrow.pswfe-vertical-steps-segment:not(:last-child)::after {
+  bottom: calc(var(--bar-size));
+}
+
+.pswfe-vertical-steps .pswfe-vertical-is-dashed.pswfe-vertical-steps-segment:after,
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.pswfe-vertical-is-dashed:after {
+  background: repeating-linear-gradient(180deg,
+      var(--bar-color),
+      var(--bar-color) 5px,
+      transparent 5px,
+      transparent 10px) !important;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.pswfe-vertical-has-gap:not(:last-child):after {
+  top: calc(var(--marker-size) * 1rem + var(--bar-gap)) !important;
+  bottom: calc(0px + var(--bar-gap) + var(--bar-size)) !important;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-has-arrow.pswfe-vertical-has-gap:not(:last-child)::before {
+  bottom: calc(var(--bar-size) / 1.5 + var(--bar-gap));
+}
+
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.is-active:not(:last-child):after {
+  background-color: var(--active-bar-color);
+}
+
+.pswfe-vertical-steps .pswfe-vertical-has-arrow.is-active:not(:last-child)::before {
+  border-right: var(--bar-size) solid var(--active-bar-color);
+  border-bottom: var(--bar-size) solid var(--active-bar-color);
+}
+
+.pswfe-vertical-steps .pswfe-vertical-is-dashed.pswfe-vertical-steps-segment.is-active::after,
+.pswfe-vertical-steps .pswfe-vertical-steps-segment.pswfe-vertical-is-dashed.is-active::after {
+  background: repeating-linear-gradient(180deg,
+      var(--active-bar-color),
+      var(--active-bar-color) 5px,
+      transparent 5px,
+      transparent 10px) !important;
+}
+
+.pswfe-vertical-steps .pswfe-vertical-is-dashed.pswfe-vertical-has-arrow.is-active::before,
+.pswfe-vertical-steps .pswfe-vertical-has-arrow.pswfe-vertical-is-dashed.is-active::before {
+  border-right: var(--bar-size) dotted var(--active-bar-color);
+  border-bottom: var(--bar-size) dotted var(--active-bar-color);
+}
+
+/*.................... Step Bar CSS - END  ....................*/
+
+/*.................... Badge CSS - START  ....................*/
+.pswfe-vertical-steps .pswfe-vertical-badge {
+ 
+ position: absolute;
+  min-height: 22px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--badge-padding);
+  color: var(--badge-color);
+  width: calc(var(--marker-size) * 2px);
+  height: calc(var(--marker-size) * 2px);
+  border-radius: var(--badge-border-radius);
+  background-color: var(--badge-background-color);
+  font-size:calc(var(--marker-size) * var(--badge-font-size));
+  font-weight: var(--badge-font-weight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  z-index: 99;
+/*     position: absolute;
+    top: var(--badge-top-pos);
+    right: var(--badge-right-pos);
+    overflow: hidden;
+    padding: var(--badge-padding);
+    max-width: 200%;
+ 
+    border-radius: var(--badge-border-radius);
+    background-color: var(--badge-background-color);
+    color: var(--badge-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: calc(var(--marker-size) * var(--badge-font-size));
+    line-height: 1; */
+}
+.pswfe-vertical-badge.steps.top-left,.pswfe-vertical-badge.top-left {
+  left: var(--badge-right-pos);
+  top: var(--badge-top-pos);
+}
+.pswfe-vertical-badge.steps.top-right,.pswfe-vertical-badge.top-right {
+  right: var(--badge-right-pos);
+  top: var(--badge-top-pos);
+}
+.pswfe-vertical-badge.steps.bottom-left,.pswfe-vertical-badge.bottom-left {
+  left: var(--badge-right-pos);
+  bottom: var(--badge-top-pos);
+}
+.pswfe-vertical-badge.steps.bottom-right,.pswfe-vertical-badge.bottom-right {
+  right: var(--badge-right-pos);
+  bottom: var(--badge-top-pos);
+}
+.pswfe-vertical-badge.steps{
+  border-radius: var(--badge-text-bd-radius) ;
+  width: auto;
+  max-width: 100%;
+}
+/* .pswfe-vertical-steps .pswfe-vertical-steps-segment.is-active .pswfe-vertical-badge {
+    background-color: rgb(203, 198, 198);
+    color: var(--active-bar-color);
+    border-color: var(--active-bar-color) !important;
+} */
+
+/*.................... Badge CSS - END  ....................*/
+
+@media screen and (max-width: 768px) {
+  .pswfe-vertical-steps {
+    width: 100% !important;
+    --marker-size:6;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .pswfe-vertical-steps {
+    width: 80% !important;
+  }
+}
+/* @media screen and (min-width: 220px) and (max-width: 450px) {
+  
+    .pswfe-vertical-steps.v-style-2 .pswfe-vertical-steps-marker {
+    
+     left: calc(50% - (var(--marker-size) * 1rem) / 2);
+  }
+   .pswfe-vertical-steps.v-style-2 .pswfe-vertical-steps-content{
+    display: initial;
+    --content-heading-align: center;
+    --content-desc-align: center;
+   
+  }
+} */

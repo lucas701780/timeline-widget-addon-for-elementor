@@ -1,0 +1,41 @@
+.twae-notice-red {
+    color: red;
+    font-weight: bold;
+}
+.twae-notice-green {
+    color: green;
+    font-weight: bold;
+}
+.license-warning.notice-error {
+    background: #fffcda;
+}
+
+
+
+/* Loading spinner for 'uninstall license' button */
+.twae-loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
+.twae-loading:after {
+    content: " ";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 5px solid #d02424;
+    border-color: #f7931a transparent #c40000 transparent;
+    animation: twae-loading 1.2s linear infinite;
+}
+  @keyframes twae-loading {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* End of loading spinner css */
